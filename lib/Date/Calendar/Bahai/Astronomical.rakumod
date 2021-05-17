@@ -4,7 +4,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Bahai::Names;
 use Date::Calendar::Bahai::Common;
 
-unit class Date::Calendar::Bahai:ver<0.0.1>:auth<cpan:JFORGET>
+unit class Date::Calendar::Bahai::Astronomical:ver<0.0.1>:auth<cpan:JFORGET>
       does Date::Calendar::Bahai::Common
       does Date::Calendar::Strftime;
 
@@ -13,9 +13,7 @@ unit class Date::Calendar::Bahai:ver<0.0.1>:auth<cpan:JFORGET>
 
 =head1 NAME
 
-=head1 DESCRIPTION
-
-Date::Calendar::Bahai::Astronomical - Conversions from / to the Baháʼí calendar
+Date::Calendar::Bahai::Astronomical - Conversions from / to the astronomical Baháʼí calendar
 
 =head1 SYNOPSIS
 
@@ -23,49 +21,50 @@ Converting a Gregorian date (e.g. 17th May 2021) into Baháʼí
 
 =begin code :lang<raku>
 
-use Date::Calendar::Bahai;
+use Date::Calendar::Bahai::Astronomical;
 my Date $dt-greg;
-my Date::Calendar::Bahai $dt-bahai;
+my Date::Calendar::Bahai::Astronomical $dt-bahai;
 
-$dt-greg    .= new(2021, 5, 17);
+$dt-greg  .= new(2021, 5, 17);
 $dt-bahai .= new-from-date($dt-greg);
 
 say $dt-bahai;
-# --> 0178-04-01
+# --> xxxx-xx-xx
 say $dt-bahai.strftime("%A %d %B %Y");
-# --> Kamál 1 ‘Aẓamat 178
+# --> xxxxxxxxxxxxxxxxxx
 
 =end code
 
-Converting a Bahai date (e.g. 19 Jamál 178) into Gregorian
+Converting a Bahai date (e.g. xxxxxxx) into Gregorian
 
 =begin code :lang<raku>
-use Date::Calendar::Bahai;
-my  Date::Calendar::Bahai $dt-bahai;
+use Date::Calendar::Bahai::Astronomical;
+my  Date::Calendar::Bahai::Astronomical $dt-bahai;
 my  Date $dt-greg;
 
-$dt-bahai .= new(year => 178, month => 3, day => 19);
+$dt-bahai .= new(year => 178, month => 1, day => 1);
 $dt-greg   = $dt-bahai.to-date;
 
 say $dt-greg;
-# --> 2021-05-16
+# --> xxxx-xx-xx
 =end code
 
 =head1 DESCRIPTION
 
-Date::Calendar::Bahai  is a  class representing  dates in  the initial
-Baháʼí calendar,  before the 2015 reform.  It allows you to  convert a
-Baháʼí date into Gregorian or into other implemented calendars, and it
-allows you  to convert  dates from Gregorian  or from  other calendars
-into Baháʼí.
+Date::Calendar::Bahai::Astronomical is  a class representing  dates in
+the astronomical  Baháʼí calendar, as  defined by the 2015  reform. It
+allows  you to  convert a  Baháʼí date  into Gregorian  or into  other
+implemented  calendars,  and  it  allows you  to  convert  dates  from
+Gregorian or from other calendars into Baháʼí.
 
-The distribution provides also the Date::Calendar::Bahai::Astronomical
-class which gives the version of the Baháʼí calendar as defined by the
-2015 reform.
+The distribution  provides also the Date::Calendar::Bahai  class which
+gives the  arithmetic version  of the  Baháʼí calendar.  For Gregorian
+dates  in the  1844--2014 interval,  that  is before  the reform,  the
+arithmetic and astronomical versions give the same results.
 
-The calendar implemented by this module is not limited to dates in the
-Gregorian range 1844--2015.  It allows you to convert  dates after the
-2015 reform while pretending the reform did not happen.
+The astronomical Baháʼí calendar is only partially implemented. It can
+represent  dates only  in the  1 to  221 years  (1844 to  2064 in  the
+Gregorian calendar).
 
 
 =head1 SEE ALSO
@@ -100,8 +99,6 @@ L<Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
 
 =head2 Perl 5 Software
-
-L<Date::Converter>
 
 L<Date::Bahai::Simple>
 
