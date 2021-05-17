@@ -1,0 +1,24 @@
+{
+  "authors": [
+    "Jean Forget"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "blah blah blah",
+  "license": "Artistic-2.0",
+  "name": "Date::Calendar::Bahai",
+  "perl": "6.d",
+  "provides": {
+    "Date::Calendar::Bahai": "lib/Date/Calendar/Bahai.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}
