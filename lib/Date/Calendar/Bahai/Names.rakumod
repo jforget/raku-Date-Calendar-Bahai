@@ -1,33 +1,95 @@
 use v6.c;
 unit module Date::Calendar::Bahai::Names:ver<0.0.1>:auth<cpan:JFORGET>;
 
-my @month-names = (
-);
+my %month-names = 'ar' => ( "Bahá"
+                         , "Jalál"
+                         , "Jamál"
+                         , "'Azamat"
+                         , "Núr"
+                         , "Rahmat"
+                         , "Kalimát"
+                         , "Kamál"
+                         , "Asmá'"
+                         , "'Izzat"
+                         , "Mashíyyat"
+                         , "'Ilm"
+                         , "Qudrat"
+                         , "Qawl"
+                         , "Masá'il"
+                         , "Sharaf"
+                         , "Sultán"
+                         , "Mulk"
+                         , "Ayyám-i-Há"
+                         , "'Alá"
+                         )
+                , 'en' => ( "Splendour"
+                          , "Glory"
+                          , "Beauty"
+                          , "Grandeur"
+                          , "Light"
+                          , "Mercy"
+                          , "Words"
+                          , "Perfection"
+                          , "Names"
+                          , "Might"
+                          , "Will"
+                          , "Knowledge"
+                          , "Power"
+                          , "Speech"
+                          , "Questions"
+                          , "Honour"
+                          , "Sovereignty"
+                          , "Dominion"
+                          , "The Days of Há"
+                          , "Loftiness"
+                          )
+                , 'fr' => ( "Gloire"
+                         , "Splendeur"
+                         , "Beauté"
+                         , "Grandeur"
+                         , "Lumière"
+                         , "Miséricorde"
+                         , "Paroles"
+                         , "Perfection"
+                         , "Noms"
+                         , "Puissance"
+                         , "Volonté"
+                         , "Connaissance"
+                         , "Pouvoir"
+                         , "Discours"
+                         , "Questions"
+                         , "Honneur"
+                         , "Souveraineté"
+                         , "Empire"
+                         , "Jours de Há"
+                         , "Élévation"
+                         ) ;
 
-my @month-abbr = < 
-                   >
+my %month-abbr  = 'ar' => < Bah Jal Jam Aza Nur Rah Kal Kal Asm Izz Mat Ilm Qud Qaw Mal Sha Sul Mul Ayy Ala >
+                , 'en' => < Glo Spl Bea Gra Lig Mer Wor Per Nam Mig Wil Kno Pow Spe Que Hon Sov Dom Add Lof >
+                , 'fr' => < Glo Spl Bea Gra Lum Mis Par Per Nom Pui Pou Vol Cnn Dis Que Hon Sou Emp Int Ele >
 ;
 
-my @day-names = ( 
-);
+my %day-names  =  'ar' => ( "Jalál", "Jamál", "Kamál",   "Fiḍál", "ʻIdál", "Istijlál", "Istiqlál" )
+                , 'en' => <  Glory    Beauty   Perfection Grace    Justice  Majesty     Independence >
+                , 'fr' => <  Gloire   Beauté   Perfection Grâce    Justice  Majesté     Indépendance >
+;
 
-my @day-abbr =  ( 
-);
+my %day-abbr  =   'ar' => < Jal Jam Kam Fid Ida Isj Isq >
+                , 'en' => < Glo Bea Per Gra Jus Maj Ind >
+                , 'fr' => < Glo Bea Per Gra Jus Maj Ind >
+;
 
-our sub month-name(Int:D $month --> Str) {
-  return @month-names[$month - 1];
+our sub allowed-locale(Str:D $locale) {
+  %month-names{$locale}:exists;
 }
 
-our sub month-abbr(Int:D $month --> Str) {
-  return @month-abbr[$month - 1];
+our sub month-name(Str:D $locale, Int:D $month --> Str) {
+  %month-names{$locale}[$month - 1];
 }
 
-our sub day-name(Int:D $day7 --> Str) {
-  return @day-names[$day7];
-}
-
-our sub day-abbr(Int:D $day7 --> Str) {
-  return @day-abbr[$day7];
+our sub day-name(Str:D $locale, Int:D $index --> Str) {
+  %day-names{$locale}[$index - 1];
 }
 
 
