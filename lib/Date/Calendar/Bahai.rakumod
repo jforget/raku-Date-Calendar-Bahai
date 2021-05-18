@@ -53,11 +53,38 @@ say $dt-greg;
 
 =head1 DESCRIPTION
 
-Date::Calendar::Bahai  is a  class representing  dates in  the initial
+C<Date::Calendar::Bahai> is a class  representing dates in the initial
 Baháʼí calendar,  before the 2015 reform.  It allows you to  convert a
 Baháʼí date into Gregorian or into other implemented calendars, and it
 allows you  to convert  dates from Gregorian  or from  other calendars
 into Baháʼí.
+
+In the Baháʼí  calendar, days begin at sunset. When  converting from /
+to  calendar   with  midnight-to-midnight   days,  we  use   the  main
+overlapping period, midnight  to sunset. For example,  Kamál 1 ‘Aẓamat
+178 begins on 16 May 2021 at sunset and ends on 17 May 2021 at sunset,
+the module gives only 17 May.
+
+The years  are numbered  in two different  ways: the  usual sequential
+count in  base 10, and  a set of  three embedded 19-year  cycles, each
+cycle being numbered 1 to 19. For example, the year beginning in March
+2021 and  ending in March  2022 is both year  178 BE (Baháʼí  Era) and
+I<year 7  of cycle  10 of  major cycle 1>.  Within the  19-year cycle,
+years are  named, so year 178  can also be I<year Abad of cycle  10 of
+major cycle 1> or I<year Abad of 10th Váḥid of 1st Kull-i-Shay’a>.
+
+Years are divided in 19 months of 19  days each, plus a period of 4 or
+5 additional  days. These additional  days are not  at the end  of the
+year, but  I<before> the last  month of  the year. Therefore,  in this
+class, months are  numbered 1 to 18 and then  20, while the additional
+days are considered as a small  month numbered 19. The reason for this
+counterintuitive setup might be that  before 2015, the Baháʼí calendar
+was precisely  synchronised with the  Gregorian calendar and  that the
+new year  (I<Naw-Rūz>) was always  on 21st  of March. Buy  putting the
+additional days before the last  month, the additional days would span
+from 26th February until 1st March, both in normal and leap years, and
+the last  month would span  from 2nd March  until 20th March,  both in
+normal and leap years.
 
 The distribution provides also the Date::Calendar::Bahai::Astronomical
 class which gives the version of the Baháʼí calendar as defined by the
@@ -65,7 +92,8 @@ class which gives the version of the Baháʼí calendar as defined by the
 
 The calendar implemented by this module is not limited to dates in the
 Gregorian range 1844--2015.  It allows you to convert  dates after the
-2015 reform while pretending the reform did not happen.
+2015 reform  while pretending the reform  did not happen and  that the
+Baháʼí calendar is still synchronised with the Gregorian calendar.
 
 
 =head1 SEE ALSO
