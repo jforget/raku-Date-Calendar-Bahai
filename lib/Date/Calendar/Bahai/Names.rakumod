@@ -1,68 +1,20 @@
 use v6.c;
 unit module Date::Calendar::Bahai::Names:ver<0.0.1>:auth<cpan:JFORGET>;
 
-my %month-names = 'ar' => ( "Bahá"
-                         , "Jalál"
-                         , "Jamál"
-                         , "'Azamat"
-                         , "Núr"
-                         , "Rahmat"
-                         , "Kalimát"
-                         , "Kamál"
-                         , "Asmá'"
-                         , "'Izzat"
-                         , "Mashíyyat"
-                         , "'Ilm"
-                         , "Qudrat"
-                         , "Qawl"
-                         , "Masá'il"
-                         , "Sharaf"
-                         , "Sultán"
-                         , "Mulk"
-                         , "Ayyám-i-Há"
-                         , "'Alá"
+my %month-names = 'ar' => ( "Bahá"     , "Jalál"  , "Jamál" , "'Azamat"   , "Núr"
+                          , "Rahmat"   , "Kalimát", "Kamál" , "Asmá'"     , "'Izzat"
+                          , "Mashíyyat", "'Ilm"   , "Qudrat", "Qawl"      , "Masá'il"
+                          , "Sharaf"   , "Sultán" , "Mulk"  , "Ayyám-i-Há", "'Alá"
                          )
-                , 'en' => ( "Splendour"
-                          , "Glory"
-                          , "Beauty"
-                          , "Grandeur"
-                          , "Light"
-                          , "Mercy"
-                          , "Words"
-                          , "Perfection"
-                          , "Names"
-                          , "Might"
-                          , "Will"
-                          , "Knowledge"
-                          , "Power"
-                          , "Speech"
-                          , "Questions"
-                          , "Honour"
-                          , "Sovereignty"
-                          , "Dominion"
-                          , "The Days of Há"
-                          , "Loftiness"
+                , 'en' => ( "Splendour", "Glory"      , "Beauty"    , "Grandeur"      , "Light"
+                          , "Mercy"    , "Words"      , "Perfection", "Names"         , "Might"
+                          , "Will"     , "Knowledge"  , "Power"     , "Speech"        , "Questions"
+                          , "Honour"   , "Sovereignty", "Dominion"  , "The Days of Há", "Loftiness"
                           )
-                , 'fr' => ( "Gloire"
-                         , "Splendeur"
-                         , "Beauté"
-                         , "Grandeur"
-                         , "Lumière"
-                         , "Miséricorde"
-                         , "Paroles"
-                         , "Perfection"
-                         , "Noms"
-                         , "Puissance"
-                         , "Volonté"
-                         , "Connaissance"
-                         , "Pouvoir"
-                         , "Discours"
-                         , "Questions"
-                         , "Honneur"
-                         , "Souveraineté"
-                         , "Empire"
-                         , "Jours de Há"
-                         , "Élévation"
+                , 'fr' => ( "Gloire"    , "Splendeur"   , "Beauté"    , "Grandeur"   , "Lumière"
+                         , "Miséricorde", "Paroles"     , "Perfection", "Noms"       , "Puissance"
+                         , "Volonté"    , "Connaissance", "Pouvoir"   , "Discours"   , "Questions"
+                         , "Honneur"    , "Souveraineté", "Empire"    , "Jours de Há", "Élévation"
                          ) ;
 
 my %month-abbr  = 'ar' => < Bah Jal Jam Aza Nur Rah Kal Kal Asm Izz Mat Ilm Qud Qaw Mal Sha Sul Mul Ayy Ala >
@@ -70,7 +22,7 @@ my %month-abbr  = 'ar' => < Bah Jal Jam Aza Nur Rah Kal Kal Asm Izz Mat Ilm Qud 
                 , 'fr' => < Glo Spl Bea Gra Lum Mis Par Per Nom Pui Pou Vol Cnn Dis Que Hon Sou Emp Int Ele >
 ;
 
-my %day-names  =  'ar' => ( "Jalál", "Jamál", "Kamál",   "Fiḍál", "ʻIdál", "Istijlál", "Istiqlál" )
+my %day-names  =  'ar' => <  Jalál    Jamál    Kamál      Fiḍál    ʻIdál    Istijlál    Istiqlál     >
                 , 'en' => <  Glory    Beauty   Perfection Grace    Justice  Majesty     Independence >
                 , 'fr' => <  Gloire   Beauté   Perfection Grâce    Justice  Majesté     Indépendance >
 ;
@@ -80,6 +32,23 @@ my %day-abbr  =   'ar' => < Jal Jam Kam Fid Ida Isj Isq >
                 , 'fr' => < Glo Bea Per Gra Jus Maj Ind >
 ;
 
+my %cycle-year-names = 'ar' => < Alif   Bá'   Ab   Dál    Báb
+                                 Váv    Abad  Jád  Bahá   Ḥubb
+                                 Bahháj Javáb Aḥad Vahháb Vidád
+                                 Badíʿ  Bahí  Abhá Váḥid
+                               >
+                     , 'en' => ( "A" 	     , "B"       , "Father"       , "D"        , "Gate"
+                               , "V" 	     , "Eternity", "Generosity"   , "Splendour", "Love"
+                               , "Delightful", "Answer"  , "Single"       , "Bountiful", "Affection"
+                               , "Beginning" , "Luminous", "Most Luminous", "Unity"
+                               )
+                     , 'fr' => ( "A"        , "B"        , "Père"          , "D"        , "Porte"
+                               , "V"        , "Éternité" , "Générosité"    , "Splendeur", "Amour"
+                               , "Délicieux", "Réponse"  , "Unique"        , "Libéral"  , "Affection"
+                               , "Début"    , "Splendide", "Plus Splendide", "Unité"
+                               );
+
+
 our sub allowed-locale(Str:D $locale) {
   %month-names{$locale}:exists;
 }
@@ -88,8 +57,20 @@ our sub month-name(Str:D $locale, Int:D $month --> Str) {
   %month-names{$locale}[$month - 1];
 }
 
+our sub month-abbr(Str:D $locale, Int:D $month --> Str) {
+  %month-abbr{$locale}[$month - 1];
+}
+
 our sub day-name(Str:D $locale, Int:D $index --> Str) {
   %day-names{$locale}[$index - 1];
+}
+
+our sub day-abbr(Str:D $locale, Int:D $index --> Str) {
+  %day-abbr{$locale}[$index - 1];
+}
+
+our sub cycle-year-name(Str:D $locale, Int:D $index --> Str) {
+  %cycle-year-names{$locale}[$index - 1];
 }
 
 
