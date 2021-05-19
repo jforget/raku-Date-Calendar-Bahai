@@ -37,8 +37,8 @@ my %cycle-year-names = 'ar' => < Alif   Bá'   Ab   Dál    Báb
                                  Bahháj Javáb Aḥad Vahháb Vidád
                                  Badíʿ  Bahí  Abhá Váḥid
                                >
-                     , 'en' => ( "A" 	     , "B"       , "Father"       , "D"        , "Gate"
-                               , "V" 	     , "Eternity", "Generosity"   , "Splendour", "Love"
+                     , 'en' => ( "A"         , "B"       , "Father"       , "D"        , "Gate"
+                               , "V"         , "Eternity", "Generosity"   , "Splendour", "Love"
                                , "Delightful", "Answer"  , "Single"       , "Bountiful", "Affection"
                                , "Beginning" , "Luminous", "Most Luminous", "Unity"
                                )

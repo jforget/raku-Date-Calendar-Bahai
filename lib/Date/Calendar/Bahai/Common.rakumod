@@ -103,11 +103,11 @@ method is-leap($year = $.year --> Bool) {
   #
   # Check                $n1-b > $n1-a  $n1-b == $n1-a  $n1-b < $n1-a
   # Duration between $n1-b and $n1-a
-  # if normal Greg year       364          +-365            366-+      
-  # if leap   Greg year       365-+        | 366-+          367 |      
-  #                               |        |     |              |      
-  # if normal Baháʼí year     365-+        +-365 |          365 |      
-  # if leap   Baháʼí year     366            366-+          366-+      
+  # if normal Greg year       364          +-365            366-+
+  # if leap   Greg year       365-+        | 366-+          367 |
+  #                               |        |     |              |
+  # if normal Baháʼí year     365-+        +-365 |          365 |
+  # if leap   Baháʼí year     366            366-+          366-+
   #                             |              |              |
   # Conclusion                  |              |              `-- the Gregorian year is normal
   #                             |              |                  and the Baháʼí year is leap
