@@ -19,6 +19,13 @@ multi method BUILD(Int:D :$major-cycle, Int:D :$cycle, Int:D :$cycle-year
   self!build-from-args2( $major-cycle, $cycle, $cycle-year, $month, $day, $locale);
 }
 
+# If $bahai-year is given, gives the March day number of Naw-Rúz for the given year.
+# If $bahai-year is omitted, gives the March day number of Naw-Rúz for the invocant.
+# Not that it matters for the arithmetic version of the Baháʼí calendar...
+method naw-ruz-number(Int $bahai-year) {
+  21;
+}
+
 
 =begin pod
 

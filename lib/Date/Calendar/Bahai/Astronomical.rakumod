@@ -8,6 +8,25 @@ unit class Date::Calendar::Bahai::Astronomical:ver<0.0.1>:auth<cpan:JFORGET>
       does Date::Calendar::Bahai::Common
       does Date::Calendar::Strftime;
 
+multi method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'ar') {
+  self!check-build-args1($year, $month, $day, $locale);
+  self!build-from-args1( $year, $month, $day, $locale);
+}
+
+multi method BUILD(Int:D :$major-cycle, Int:D :$cycle, Int:D :$cycle-year
+                 , Int:D :$month,       Int:D :$day,   Str   :$locale = 'ar') {
+  self!check-build-args2($major-cycle, $cycle, $cycle-year, $month, $day, $locale);
+  self!build-from-args2( $major-cycle, $cycle, $cycle-year, $month, $day, $locale);
+}
+
+# If $bahai-year is given, gives the March day number of Naw-Rúz for the given year.
+# If $bahai-year is omitted, gives the March day number of Naw-Rúz for the invocant.
+method naw-ruz-number(Int $bahai-year = $.year) {
+  if $bahai-year == 172 | 175 | 176 | 179 | 180 | 183 | 184 | 188 | 192 | 196 | 200 | 204 | 208 | 212 {
+    return 21;
+  }
+  return 20;
+}
 
 =begin pod
 

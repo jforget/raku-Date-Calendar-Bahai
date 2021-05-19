@@ -22,7 +22,7 @@ my @tests = (('zzz',       3, 'zzz')
              );
 
 #plan 8 + 2 × @tests.elems + 5 + 5;
-plan 9;
+plan 4 + 5 + 2 + 2;
 
 # 1-10-04-07-02 = 0178-04-02 = 2021-05-18
 my Date::Calendar::Bahai $d .= new(year => 178, month => 4, day => 2);
@@ -59,4 +59,15 @@ is($d.locale,     'en');
 $d.locale = 'fr';
 
 is($d.locale,     'fr');
+
+# Year starting on 21 March
+my Date::Calendar::Bahai::Astronomical $d1 .= new(year => 176, month => 12, day => 2);
+is($d1.month,        12);
+is($d1.year,        176);
+
+# Year starting on 20 March
+$d1 .= new(year => 181, month => 14, day => 2);
+is($d1.month,        14);
+is($d1.year,        181);
+
 done-testing;
