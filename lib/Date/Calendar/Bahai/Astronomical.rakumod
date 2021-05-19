@@ -21,7 +21,12 @@ multi method BUILD(Int:D :$major-cycle, Int:D :$cycle, Int:D :$cycle-year
 
 # If $bahai-year is given, gives the March day number of Naw-Rúz for the given year.
 # If $bahai-year is omitted, gives the March day number of Naw-Rúz for the invocant.
+# Data based on the https://bahai-library.com/pdf/uhj/uhj_badi_calendar_2014.pdf document
+# (see https://bahai-library.com/uhj_badi_calendar_2014)
 method naw-ruz-number(Int $bahai-year = $.year) {
+  if $bahai-year < 172 || $bahai-year > 221 {
+    return 21;
+  }
   if $bahai-year == 172 | 175 | 176 | 179 | 180 | 183 | 184 | 188 | 192 | 196 | 200 | 204 | 208 | 212 {
     return 21;
   }
@@ -85,6 +90,7 @@ The astronomical Baháʼí calendar is only partially implemented. It can
 represent  dates only  in the  1 to  221 years  (1844 to  2064 in  the
 Gregorian calendar).
 
+Please see L<Date::Calendar::Bahai> for the complete documentation.
 
 =head1 SEE ALSO
 

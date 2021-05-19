@@ -31,11 +31,58 @@ method !check-build-args1(Int $year, Int $month, Int $day, Str $locale) {
     }
   }
   else {
-    # TODO : checking the day number during the additional days pseudo-month
-    #my Int $limit =  month-days($year, $month, &bias);
-    #unless 1 ≤ $day ≤ $limit {
-    #  X::OutOfRange.new(:what<Day>, :got($day), :range("1..$limit for additional days this year")).throw;
-    #}
+    # Checking the additional days (Ayyám-i-Há), within either the 1..4 range or the 1..5 range.
+    my Int  $naw-ruz-before = $.naw-ruz-number($year);
+    my Int  $naw-ruz-after  = $.naw-ruz-number($year + 1);
+    my Bool $is-leap     = False;
+
+    # How does it work? We compute the September number of two successive Naw-Rúz
+    # dates. Then we compare the values and we check if the comparison is compatible with a
+    # leap Baháʼí year and with a leap Gregorian year.
+    #
+    # Examples
+    #
+    # French Rev year             3              4                5
+    # Gregorian year before    1794           1795             1796
+    # Gregorian year after     1795           1796             1797
+    # $naw-ruz-before            20             21               20
+    # $naw-ruz-after             21             20               20
+    #
+    # Check                 $n1-b < $n1-a  $n1-b > $n1-a   $n1-b == $n1-a
+    # Duration between $n1-b and $n1-a
+    # if normal Greg year       366-+          364            +-365
+    # if leap   Greg year       367 |          365-+          | 366-+
+    # if normal Baháʼí year     365 |          365-+          +-365 |
+    # if leap   Baháʼí year     366-+          366              366-+
+    #                             |              |                |
+    # Conclusion                  |              |                `-- the Gregorian and Baháʼí years
+    #                             |              |                    are both normal or they are both leap
+    #                             |              `------------------- the Gregorian year is leap
+    #                             |                                   and the Baháʼí year is normal
+    #                             `---------------------------------- the Gregorian year is normal
+    #                                                                 and the Baháʼí year is leap
+    #
+    # Remark: the Gregorian year checked for leapness / normality is the Gregorian year "after",
+    # because the Baháʼí year includes the February month from the Greg year "after" but
+    # not from the Greg year "before".
+
+    if $naw-ruz-before < $naw-ruz-after {
+      $is-leap = True;
+    }
+    elsif $naw-ruz-before == $naw-ruz-after {
+      $is-leap = Date.new($year + 1844, 1, 1).is-leap-year;
+    }
+
+    if $is-leap {
+      unless 1 ≤ $day ≤ 5 {
+        X::OutOfRange.new(:what<Day>, :got($day), :range<1..5>).throw;
+      }
+    }
+    else {
+      unless 1 ≤ $day ≤ 4 {
+        X::OutOfRange.new(:what<Day>, :got($day), :range<1..4>).throw;
+      }
+    }
   }
   unless Date::Calendar::Bahai::Names::allowed-locale($locale) {
     X::Invalid::Value.new(:method<BUILD>, :name<locale>, :value($locale)).throw;
