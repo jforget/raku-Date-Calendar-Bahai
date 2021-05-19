@@ -8,6 +8,17 @@ unit class Date::Calendar::Bahai:ver<0.0.1>:auth<cpan:JFORGET>
       does Date::Calendar::Bahai::Common
       does Date::Calendar::Strftime;
 
+multi method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'ar') {
+  self!check-build-args1($year, $month, $day, $locale);
+  self!build-from-args1( $year, $month, $day, $locale);
+}
+
+multi method BUILD(Int:D :$major-cycle, Int:D :$cycle, Int:D :$cycle-year
+                 , Int:D :$month,       Int:D :$day,   Str   :$locale = 'ar') {
+  self!check-build-args2($major-cycle, $cycle, $cycle-year, $month, $day, $locale);
+  self!build-from-args2( $major-cycle, $cycle, $cycle-year, $month, $day, $locale);
+}
+
 
 =begin pod
 
@@ -95,6 +106,27 @@ Gregorian range 1844--2015.  It allows you to convert  dates after the
 2015 reform  while pretending the reform  did not happen and  that the
 Baháʼí calendar is still synchronised with the Gregorian calendar.
 
+=head1 BUGS AND ISSUES
+
+Although there  are 19 real months,  the months are numbered  until 20
+because the additional days (I<Ayyám-i-Há>)  are considered as a short
+pseudo-month  numbered  19,  so  month I<Alá>  is  numbered  20.  This
+numbering scheme allows  easy sorting of dates  with the C<YYYY-MM-DD>
+format.  On  the  other  hand,  it is  incompatible  with  some  other
+programs'  numbering scheme,  notably  F<calendar.l>  by Reingold  and
+Dershowitz.
+
+Is the major cycle limited to the  1..19 range or is it open-ended? Do
+we need  a super-major cycle for  the time when the  major-cycle reach
+19? We'll need to settle on  this around Gregorian year 8700, so there
+is still time...
+
+The astronomical version is defined  until year 221, that is Gregorian
+year  2065.  Beyond that,  the  C<Date::Calendar::Bahai::Astronomical>
+class silently reverts to the arithmetic version.
+
+Some months has the same name as  week days. Be careful and do not mix
+them.
 
 =head1 SEE ALSO
 
