@@ -22,7 +22,7 @@ my @tests = (('zzz',       3, 'zzz')
              );
 
 #plan 8 + 2 × @tests.elems + 5 + 5;
-plan 4 + 5 + 2 + 2;
+plan 7 + 8 + 2 + 2;
 
 # 1-10-04-07-02 = 0178-04-02 = 2021-05-18
 my Date::Calendar::Bahai $d .= new(year => 178, month => 4, day => 2);
@@ -31,6 +31,9 @@ is($d.month,         4);
 is($d.day,           2);
 is($d.year,        178);
 is($d.locale,     'ar');
+is($d.cycle-year,    7);
+is($d.cycle,        10);
+is($d.major-cycle,   1);
 #is($d.daycount,  59352);
 #is($d.day-of-week,   5);
 #is($d.day-of-year,  59);
@@ -55,6 +58,9 @@ is($d.month,         4);
 is($d.day,           3);
 is($d.year,        178);
 is($d.locale,     'en');
+is($d.cycle-year,    7);
+is($d.cycle,        10);
+is($d.major-cycle,   1);
 
 $d.locale = 'fr';
 

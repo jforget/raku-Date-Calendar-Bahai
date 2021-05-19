@@ -61,6 +61,8 @@ method !build-from-args1(Int $year, Int $month, Int $day, Str $locale) {
   $!month  = $month;
   $!day    = $day;
   $!locale = $locale;
+
+  ($!cycle-year, $!cycle, $!major-cycle) = ($year - 1).polymod(19, 19) «+» 1;
   # TODO : fill the other attributes
 }
 
