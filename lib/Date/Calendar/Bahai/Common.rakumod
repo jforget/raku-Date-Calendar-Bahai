@@ -32,48 +32,7 @@ method !check-build-args1(Int $year, Int $month, Int $day, Str $locale) {
   }
   else {
     # Checking the additional days (Ayyám-i-Há), within either the 1..4 range or the 1..5 range.
-    my Int  $naw-ruz-before = $.naw-ruz-number($year);
-    my Int  $naw-ruz-after  = $.naw-ruz-number($year + 1);
-    my Bool $is-leap     = False;
-
-    # How does it work? We compute the September number of two successive Naw-Rúz
-    # dates. Then we compare the values and we check if the comparison is compatible with a
-    # leap Baháʼí year and with a leap Gregorian year.
-    #
-    # Examples
-    #
-    # French Rev year             3              4                5
-    # Gregorian year before    1794           1795             1796
-    # Gregorian year after     1795           1796             1797
-    # $naw-ruz-before            20             21               20
-    # $naw-ruz-after             21             20               20
-    #
-    # Check                 $n1-b < $n1-a  $n1-b > $n1-a   $n1-b == $n1-a
-    # Duration between $n1-b and $n1-a
-    # if normal Greg year       366-+          364            +-365
-    # if leap   Greg year       367 |          365-+          | 366-+
-    # if normal Baháʼí year     365 |          365-+          +-365 |
-    # if leap   Baháʼí year     366-+          366              366-+
-    #                             |              |                |
-    # Conclusion                  |              |                `-- the Gregorian and Baháʼí years
-    #                             |              |                    are both normal or they are both leap
-    #                             |              `------------------- the Gregorian year is leap
-    #                             |                                   and the Baháʼí year is normal
-    #                             `---------------------------------- the Gregorian year is normal
-    #                                                                 and the Baháʼí year is leap
-    #
-    # Remark: the Gregorian year checked for leapness / normality is the Gregorian year "after",
-    # because the Baháʼí year includes the February month from the Greg year "after" but
-    # not from the Greg year "before".
-
-    if $naw-ruz-before < $naw-ruz-after {
-      $is-leap = True;
-    }
-    elsif $naw-ruz-before == $naw-ruz-after {
-      $is-leap = Date.new($year + 1844, 1, 1).is-leap-year;
-    }
-
-    if $is-leap {
+    if $.is-leap($year) {
       unless 1 ≤ $day ≤ 5 {
         X::OutOfRange.new(:what<Day>, :got($day), :range<1..5>).throw;
       }
@@ -110,7 +69,64 @@ method !build-from-args1(Int $year, Int $month, Int $day, Str $locale) {
   $!locale = $locale;
 
   ($!cycle-year, $!cycle, $!major-cycle) = ($year - 1).polymod(19, 19) «+» 1;
+  my Int $doy = $day + 19 × ($month - 1);
+  if $month == 20 and $.is-leap($year) {
+    $doy -= 14; # only 5 additional days, not 19, in pseudo-month Ayyám-i-Há
+  }
+  elsif $month == 20 {
+    $doy -= 15; # only 4 additional days, not 19, in pseudo-month Ayyám-i-Há
+  }
+  my Int $daycount = $doy - 1 + Date.new($year + 1843, 3, $.naw-ruz-number($year)).daycount;
+  my Int $dow      = ($daycount + 4) % 7 + 1;
+  $!day-of-week = $dow;
+  $!day-of-year = $doy;
+  $!daycount    = $daycount;
   # TODO : fill the other attributes
+}
+
+method is-leap($year = $.year --> Bool) {
+  my Int  $naw-ruz-before = $.naw-ruz-number($year);
+  my Int  $naw-ruz-after  = $.naw-ruz-number($year + 1);
+  my Bool $is-leap     = False;
+
+  # How does it work? We compute the March number of two successive Naw-Rúz
+  # dates. Then we compare the values and we check if the comparison is compatible with a
+  # leap Baháʼí year and with a leap Gregorian year.
+  #
+  # Examples
+  #
+  # Baháʼí year               172            173            174
+  # Gregorian year before    2015           2016           2017
+  # Gregorian year after     2016           2017           2018
+  # $naw-ruz-before            21             20             20
+  # $naw-ruz-after             20             20             21
+  #
+  # Check                $n1-b > $n1-a  $n1-b == $n1-a  $n1-b < $n1-a
+  # Duration between $n1-b and $n1-a
+  # if normal Greg year       364          +-365            366-+      
+  # if leap   Greg year       365-+        | 366-+          367 |      
+  #                               |        |     |              |      
+  # if normal Baháʼí year     365-+        +-365 |          365 |      
+  # if leap   Baháʼí year     366            366-+          366-+      
+  #                             |              |              |
+  # Conclusion                  |              |              `-- the Gregorian year is normal
+  #                             |              |                  and the Baháʼí year is leap
+  #                             |              `----------------- the Gregorian and Baháʼí years
+  #                             |                                 are both normal or they are both leap
+  #                             `-------------------------------- the Gregorian year is leap
+  #                                                               and the Baháʼí year is normal
+  #
+  # Remark: the Gregorian year checked for leapness / normality is the Gregorian year "after",
+  # because the Baháʼí year includes the February month from the Greg year "after" but
+  # not from the Greg year "before".
+
+  if $naw-ruz-before < $naw-ruz-after {
+    $is-leap = True;
+  }
+  elsif $naw-ruz-before == $naw-ruz-after {
+    $is-leap = Date.new($year + 1844, 1, 1).is-leap-year;
+  }
+  return $is-leap
 }
 
 sub year-number(Int $major-cycle, Int $cycle, Int $cycle-year --> Int) {
