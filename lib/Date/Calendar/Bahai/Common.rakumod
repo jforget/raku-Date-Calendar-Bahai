@@ -84,6 +84,30 @@ method !build-from-args1(Int $year, Int $month, Int $day, Str $locale) {
   # TODO : fill the other attributes
 }
 
+method gist {
+  sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
+}
+
+method month-name {
+  Date::Calendar::Bahai::Names::month-name($.locale, $.month);
+}
+
+method month-abbr {
+  Date::Calendar::Bahai::Names::month-abbr($.locale, $.month);
+}
+
+method day-name {
+  Date::Calendar::Bahai::Names::day-name($.locale, $.day-of-week);
+}
+
+method day-abbr {
+  Date::Calendar::Bahai::Names::day-abbr($.locale, $.day-of-week);
+}
+
+method cycle-year-name {
+  Date::Calendar::Bahai::Names::cycle-year-name($.locale, $.cycle-year);
+}
+
 method is-leap($year = $.year --> Bool) {
   my Int  $naw-ruz-before = $.naw-ruz-number($year);
   my Int  $naw-ruz-after  = $.naw-ruz-number($year + 1);

@@ -22,7 +22,7 @@ my @tests = (('zzz',       3, 'zzz')
              );
 
 #plan 8 + 2 × @tests.elems + 5 + 5;
-plan 10 + 11 + 2 + 2;
+plan 11 + 29 + 2 + 2;
 
 # 1-10-04-07-02 = 0178-04-02 = 2021-05-18
 my Date::Calendar::Bahai $d .= new(year => 178, month => 4, day => 2);
@@ -39,6 +39,7 @@ is($d.day-of-week,   4);
 is($d.day-of-year,  59);
 #is($d.week-year,   178);
 #is($d.week-number,   8);
+is($d.gist,  '0178-04-02');
 #
 #for @tests -> $test {
 #  my ($format, $length, $expected) = $test;
@@ -61,6 +62,14 @@ is($d.locale,     'en');
 is($d.cycle-year,    7);
 is($d.cycle,        10);
 is($d.major-cycle,   1);
+is($d.month-name,       "Grandeur");
+is($d.month-abbr,       "Gra");
+is($d.cycle-year-name,  "Eternity");
+is($d.day-name,         "Justice");
+is($d.day-abbr,         "Jus");
+is($d.daycount,  59353);
+is($d.day-of-week,   5);
+is($d.day-of-year,  60);
 
 $d.locale = 'fr';
 
@@ -68,6 +77,19 @@ is($d.daycount,  59353);
 is($d.day-of-week,   5);
 is($d.day-of-year,  60);
 is($d.locale,     'fr');
+is($d.cycle-year-name,  "Éternité");
+is($d.day-name,         "Justice");
+is($d.day-abbr,         "Jus");
+is($d.month-name,       "Grandeur");
+is($d.month-abbr,       "Gra");
+
+$d.locale = 'ar';
+
+is($d.cycle-year-name,  "Abad");
+is($d.month-name,       "'Azamat");
+is($d.month-abbr,       "Aza");
+is($d.day-name,         "ʻIdál");
+is($d.day-abbr,         "Ida");
 
 # Year starting on 21 March
 my Date::Calendar::Bahai::Astronomical $d1 .= new(year => 176, month => 12, day => 2);
