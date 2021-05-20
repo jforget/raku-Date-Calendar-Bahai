@@ -55,7 +55,7 @@ method !check-build-args2(Int $major-cycle, Int $cycle, Int $cycle-year, Int $mo
   unless 1 ≤ $cycle-year ≤ 19 {
     X::OutOfRange.new(:what<Cycle-year>, :got($cycle-year), :range<1..19>).throw;
   }
-  $_!check-build-args1(year-number($major-cycle, $cycle, $cycle-year), $month, $day, $locale);
+  self!check-build-args1(year-number($major-cycle, $cycle, $cycle-year), $month, $day, $locale);
 }
 
 method !build-from-args2(Int $major-cycle, Int $cycle, Int $cycle-year, Int $month, Int $day, Str $locale) {
@@ -106,6 +106,12 @@ method day-abbr {
 
 method cycle-year-name {
   Date::Calendar::Bahai::Names::cycle-year-name($.locale, $.cycle-year);
+}
+
+method to-date($class = 'Date') {
+  # See "Learning Perl 6" page 177
+  my $d = ::($class).new-from-daycount($.daycount);
+  return $d;
 }
 
 method is-leap($year = $.year --> Bool) {
