@@ -1,0 +1,55 @@
+#!/usr/bin/env perl
+# -*- encoding: utf-8; indent-tabs-mode: nil -*-
+#
+# Generate test data for the Bahai calendar class
+#
+# Copyright (C) 2021, Jean Forget, all rights reserved
+#
+# This library is free software; you can redistribute it and/or modify
+# it under the Artistic License 2.0.
+#
+# Perl program used to generate a few dates, that will be inserted
+# in a Raku test script. The dates includes the test data for the
+# Perl module Date::Converter.
+# Cross-checked with https://www.funaba.org/cc
+
+use utf8;
+use v5.10;
+use strict;
+use Date::Converter;
+
+my $converter = new Date::Converter('bahai', 'gregorian');
+for (<DATA>) {
+ convert(split ' ', $_);
+}
+
+sub convert {
+  my ($major, $cycle, $c_year, $month, $day) = @_;
+  my $year = (19 * ($major - 1) + $cycle - 1)
+               * 19 + $c_year;
+  my ($y2, $m2, $d2) = $converter->convert($year, $month, $day);
+  printf("< %2d %2d %2d %4d %2d %2d %4d %2d %2d>\n", $major, $cycle, $c_year, $year, $month, $day, $y2, $m2, $d2);
+}
+
+__DATA__
+ 1  1  1  1  1
+ 1  1  1 19  1
+ 1  1  1 20 19
+ 1  1  2  1  1
+ 1  4  3  2 11
+ 1  5 10  9  6
+ 1  6  3 11  3
+ 1  6  5  2 11
+ 1  6  5 11 11
+ 1  8 15 20 16
+ 1  8 19 18 19
+ 1 10  4 19  3
+ 1 10  4 19  4
+ 1 10  4 20  1
+ 1 10  5 19  4
+ 1 10  5 19  5
+ 1 10  5 20  1
+ 1 10  5 20 19
+ 1 10  7  4  4
+ 1 11  5 13  7
+ 1 14  4  7  6
