@@ -113,6 +113,137 @@ Gregorian range 1844--2015.  It allows you to convert  dates after the
 2015 reform  while pretending the reform  did not happen and  that the
 Baháʼí calendar is still synchronised with the Gregorian calendar.
 
+=head1 METHODS
+
+=head2 Constructors
+
+=head3 new
+
+Create an  Baháʼí date by giving  the year, month and  day numbers and
+the C<locale> code.
+
+The year can be specified either  by a single parameter C<year>, or by
+three parameters C<cycle-year>, C<cycle> and C<major-cycle>.
+
+Currently implemented  locales are C<ar> for  Arabic (default locale),
+C<en> for English and C<fr> for French.
+
+=head3 new-from-date
+
+Build an  Baháʼí date by  cloning an  object from another  class. This
+other   class    can   be    the   core    class   C<Date>    or   any
+C<Date::Calendar::>R<xxx> class with a C<daycount> method.
+
+=head3 new-from-daycount
+
+Build an Baháʼí date from the Modified Julian Day number.
+
+=head2 Accessors
+
+=head3 gist
+
+Gives a short string representing the date, in C<YYYY-MM-DD> format.
+
+=head3 year, month, day
+
+The numbers defining the date.
+
+=head3 major-cycle, cycle, cycle-year
+
+The alternate definition of the year.
+
+=head3 month-name
+
+The month of the date, as a string.
+
+=head3 month-abbr
+
+The month of the  date, as a 3-char string.
+
+=head3 day-name
+
+The name of the day within the week.
+
+=head3 day-abbr
+
+The weekday of the  date, as a 3-char string.
+
+=head3 cycle-year-name
+
+The name associated to the year within the 19-year cycle.
+
+=head3 daycount
+
+Convert  the date  to Modified  Julian Day  Number (a  day-only scheme
+based on 17 November 1858).
+
+=head3 day-of-week
+
+The number of the  day within the week (1 for Saturday  / Jalál, 7 for
+Friday / Istiqlál).
+
+=head3 week-number
+
+The number of the week within the year, 1 to 52 or 1 to 53. Similar to
+the "ISO  date" as defined  for Gregorian date.  Week number 1  is the
+Sat→Fri span that contains the first Tuesday / Fiḍál of the year, week
+number 2 is the Sat→Fri span  that contains the second Tuesday / Fiḍál
+of the year and so on.
+
+=head3 week-year
+
+Mostly similar  to the C<year>  attribute. Yet,  the last days  of the
+year  and  the  first  days  of the  following  year  can  be  sort-of
+transferred  to the  other year.  The C<week-year>  attribute reflects
+this transfer. While the real year  always begins on 1st Bahá and ends
+on the  19th Alá, the C<week-year>  always begins on Saturday  / Jalál
+and it always ends on Friday / Istiqlál.
+
+=head3 day-of-year
+
+How many  days since  the beginning of  the year. 1  to 365  on normal
+years, 1 to 366 on leap years.
+
+=head2 Other Methods
+
+=head3 to-date
+
+Clones  the   date  into   a  core  class   C<Date>  object   or  some
+C<Date::Calendar::>R<xxx> compatible calendar  class. The target class
+name is given  as a positional parameter. This  parameter is optional,
+the default value is C<"Date"> for the Gregorian calendar.
+
+To convert a date from a  calendar to another, you have two conversion
+styles,  a "push"  conversion and  a "pull"  conversion. For  example,
+while  converting  "11  Bahman   1440"  to  the  French  Revolutionary
+calendar, you can code:
+
+=begin code :lang<perl6>
+
+use Date::Calendar::Bahai;
+use Date::Calendar::FrenchRevolutionary;
+
+my  Date::Calendar::Bahai               $d-orig;
+my  Date::Calendar::FrenchRevolutionary $d-dest-push;
+my  Date::Calendar::FrenchRevolutionary $d-dest-pull;
+
+$d-orig .= new(year  => 178
+             , month =>   4
+             , day   =>   4);
+$d-dest-push  = $d-orig.to-date("Date::Calendar::FrenchRevolutionary");
+$d-dest-pull .= new-from-date($d-orig);
+
+=end code
+
+When converting  I<from> the core  class C<Date>, use the  pull style.
+When converting I<to> the core class C<Date>, use the push style. When
+converting from  any class other  than the  core class C<Date>  to any
+other  class other  than the  core class  C<Date>, use  the style  you
+prefer. For the Gregorian calendar, instead of the core class C<Date>,
+you can use the  child class C<Date::Calendar::Gregorian> which allows
+both push and pull styles.
+
+
 =head1 BUGS AND ISSUES
 
 Although there  are 19 real months,  the months are numbered  until 20

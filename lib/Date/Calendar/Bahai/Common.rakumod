@@ -95,26 +95,27 @@ method is-leap($year = $.year --> Bool) {
   #
   # Examples
   #
-  # Baháʼí year               172            173            174
-  # Gregorian year before    2015           2016           2017
-  # Gregorian year after     2016           2017           2018
-  # $naw-ruz-before            21             20             20
-  # $naw-ruz-after             20             20             21
+  # Baháʼí year                  172            173            174
+  # Gregorian year before       2015           2016           2017
+  # Gregorian year after        2016           2017           2018
+  # $naw-ruz-before               21             20             20
+  # $naw-ruz-after                20             20             21
   #
-  # Check                $n1-b > $n1-a  $n1-b == $n1-a  $n1-b < $n1-a
-  # Duration between $n1-b and $n1-a
-  # if normal Greg year       364          +-365            366-+
-  # if leap   Greg year       365-+        | 366-+          367 |
-  #                               |        |     |              |
-  # if normal Baháʼí year     365-+        +-365 |          365 |
-  # if leap   Baháʼí year     366            366-+          366-+
-  #                             |              |              |
-  # Conclusion                  |              |              `-- the Gregorian year is normal
-  #                             |              |                  and the Baháʼí year is leap
-  #                             |              `----------------- the Gregorian and Baháʼí years
-  #                             |                                 are both normal or they are both leap
-  #                             `-------------------------------- the Gregorian year is leap
-  #                                                               and the Baháʼí year is normal
+  # Check                   $nr-b > $nr-a  $nr-b == $nr-a  $nr-b < $nr-a
+  #
+  # Duration between $nr-b and $nr-a
+  # if normal Greg year    365-1=364          +-365      365+1=366-+
+  # if leap   Greg year    366-1=365-+        | 366-+    366+1=367 |
+  #                                  |        |     |              |
+  # if normal Baháʼí year        365-+        +-365 |          365 |
+  # if leap   Baháʼí year        366            366-+          366-+
+  #                                |              |              |
+  # Conclusion                     |              |              `-- the Gregorian year is normal
+  #                                |              |                  and the Baháʼí year is leap
+  #                                |              `----------------- the Gregorian and Baháʼí years
+  #                                |                                 are both normal or they are both leap
+  #                                `-------------------------------- the Gregorian year is leap
+  #                                                                  and the Baháʼí year is normal
   #
   # Remark: the Gregorian year checked for leapness / normality is the Gregorian year "after",
   # because the Baháʼí year includes the February month from the Greg year "after" but
