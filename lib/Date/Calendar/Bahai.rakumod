@@ -33,7 +33,7 @@ method naw-ruz-number(Int $bahai-year) {
 
 =head1 DESCRIPTION
 
-Date::Calendar::Bahai::Astronomical - Conversions from / to the Baháʼí calendar
+Date::Calendar::Bahai - Conversions from / to the Baháʼí calendar
 
 =head1 SYNOPSIS
 
@@ -98,7 +98,7 @@ class, months are  numbered 1 to 18 and then  20, while the additional
 days are considered as a small  month numbered 19. The reason for this
 counterintuitive setup might be that  before 2015, the Baháʼí calendar
 was precisely  synchronised with the  Gregorian calendar and  that the
-new year  (I<Naw-Rūz>) was always  on 21st  of March. Buy  putting the
+new year  (I<Naw-Rūz>) was  always on  21st of  March. By  putting the
 additional days before the last  month, the additional days would span
 from 26th February until 1st March, both in normal and leap years, and
 the last  month would span  from 2nd March  until 20th March,  both in
@@ -108,10 +108,11 @@ The distribution provides also the Date::Calendar::Bahai::Astronomical
 class which gives the version of the Baháʼí calendar as defined by the
 2015 reform.
 
-The calendar implemented by this module is not limited to dates in the
-Gregorian range 1844--2015.  It allows you to convert  dates after the
-2015 reform  while pretending the reform  did not happen and  that the
-Baháʼí calendar is still synchronised with the Gregorian calendar.
+The calendar  implemented by the  arithmetic module is not  limited to
+dates  in the  Gregorian range  1844--2015. It  allows you  to convert
+dates after the 2015 reform while pretending the reform did not happen
+and that the Baháʼí calendar  is still synchronised with the Gregorian
+calendar.
 
 =head1 METHODS
 
@@ -127,6 +128,13 @@ three parameters C<cycle-year>, C<cycle> and C<major-cycle>.
 
 Currently implemented  locales are C<ar> for  Arabic (default locale),
 C<en> for English and C<fr> for French.
+
+=begin code :lang<raku>
+use Date::Calendar::Bahai;
+my  Date::Calendar::Bahai $dt-bahai;
+$dt-bahai .= new(year => 178, month => 3, day => 19);
+$dt-bahai .= new(major-cycle => 1, cycle => 10, cycle-year => 7, month => 3, day => 19);
+=end code
 
 =head3 new-from-date
 
@@ -203,6 +211,32 @@ and it always ends on Friday / Istiqlál.
 
 How many  days since  the beginning of  the year. 1  to 365  on normal
 years, 1 to 366 on leap years.
+
+=head3 is-leap
+
+Returns C<True> if the invocant date  belongs to a leap year, C<False>
+if the invocant date belongs to a normal year.
+
+This method  allows an  optional parameter, to  specify a  Baháʼí year
+(the single-number  version). If this  parameter is supplied,  and the
+parameter  year  is tested  for  leapness  and  the invocant  date  is
+ignored.
+
+=begin code :lang<raku>
+use Date::Calendar::Bahai;
+my  Date::Calendar::Bahai $dt-bahai;
+
+$dt-bahai .= new(year => 178, month => 3, day => 19);
+
+if $dt-bahai.is-leap {
+  say $dt-bahai.year, " is a leap year";
+}
+if $dt-bahai.is-leap(180) {
+  say "180 is a leap year";
+}
+
+=end code
+
 
 =head2 Other Methods
 
@@ -309,7 +343,7 @@ date(1), strftime(3)
 
 F<calendar/cal-bahai.el>  in emacs  or xemacs.
 
-CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
+CALENDRICA 4.0 -- Common Lisp, which can be downloaded in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>
 
 =head2 Book
