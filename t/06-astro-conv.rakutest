@@ -1,0 +1,104 @@
+#
+# Checking the conversions when using the astronomical calendar
+#
+use v6.c;
+use Test;
+use Date::Calendar::Bahai::Astronomical;
+
+my @test-data = load-data();
+
+plan 3 × @test-data.elems;
+
+for @test-data -> $datum {
+  my ($major, $cycle, $cycle-y, $y-bh, $m-bh, $d-bh, $y-gr, $m-gr, $d-gr) = $datum;
+
+  my Date::Calendar::Bahai::Astronomical
+          $date-bh;
+  my Date $date-gr;
+
+  $date-gr .= new($y-gr, $m-gr, $d-gr);
+  $date-bh .= new-from-date($date-gr);
+
+  my Str $expected = sprintf("%04d-%02d-%02d", $y-bh, $m-bh, $d-bh);
+  is($date-bh.gist, $expected);
+}
+
+for @test-data -> $datum {
+  my ($major, $cycle, $cycle-y, $y-bh, $m-bh, $d-bh, $y-gr, $m-gr, $d-gr) = $datum;
+
+  my Date::Calendar::Bahai::Astronomical
+          $date-bh;
+  my Date $date-gr;
+
+  $date-bh .= new(year => +$y-bh, month => +$m-bh, day => +$d-bh);
+  $date-gr  = $date-bh.to-date;
+
+  my Str $expected = sprintf("%04d-%02d-%02d", $y-gr, $m-gr, $d-gr);
+  is($date-gr.gist, $expected);
+}
+
+for @test-data -> $datum {
+  my ($major, $cycle, $cycle-y, $y-bh, $m-bh, $d-bh, $y-gr, $m-gr, $d-gr) = $datum;
+
+  my Date::Calendar::Bahai::Astronomical
+          $date-bh;
+  my Date $date-gr;
+
+  $date-bh .= new(major-cycle => +$major, cycle => +$cycle, cycle-year => +$cycle-y
+                 , month => +$m-bh, day => +$d-bh);
+  $date-gr  = $date-bh.to-date;
+
+  my Str $expected = sprintf("%04d-%02d-%02d", $y-gr, $m-gr, $d-gr);
+  is($date-gr.gist, $expected);
+}
+
+done-testing;
+
+sub load-data {
+  return (
+           # Test data computed by the Perl module Date::Converter
+           # and cross-checked with https://www.funaba.org/cc
+           <  1  1  1    1  1  1 1844  3 21>
+         , <  1  1  1    1 19  1 1845  2 26>
+         , <  1  1  1    1 20 19 1845  3 20>
+         , <  1  1  2    2  1  1 1845  3 21>
+         , <  1  4  3   60  2 11 1903  4 19>
+         , <  1  5 10   86  9  6 1929  8 25>
+         , <  1  6  3   98 11  3 1941  9 29>
+         , <  1  6  5  100  2 11 1943  4 19>
+         , <  1  6  5  100 11 11 1943 10  7>
+         , <  1  8 15  148 20 16 1992  3 17>
+         , <  1  8 19  152 18 19 1996  2 25>
+         , <  1 14  4  251  7  6 2094  7 18>
+           # Test data copied from  https://bahai-library.com/pdf/uhj/uhj_badi_calendar_2014.pdf
+           # (see https://bahai-library.com/uhj_badi_calendar_2014)
+           # First, Naw-Rúz
+         , <  1 10  1  172  1  1 2015  3 21>
+         , <  1 10  1  172 20 19 2016  3 19>
+         , <  1 10  2  173  1  1 2016  3 20>
+         , <  1 10  2  173 20 19 2017  3 19>
+         , <  1 10  3  174  1  1 2017  3 20>
+	   # Then Ayyám-i-Há
+         , <  1 10  1  172 18 19 2016  2 25>
+         , <  1 10  1  172 19  1 2016  2 26>
+         , <  1 10  1  172 19  4 2016  2 29>
+         , <  1 10  1  172 20  1 2016  3  1>
+         , <  1 10  3  174 18 19 2018  2 24>
+         , <  1 10  3  174 19  1 2018  2 25>
+         , <  1 10  3  174 19  4 2018  2 28>
+         , <  1 10  3  174 19  5 2018  3  1>
+         , <  1 10  3  174 20  1 2018  3  2>
+         , <  1 10 10  181 18 19 2025  2 24>
+         , <  1 10 10  181 19  1 2025  2 25>
+         , <  1 10 10  181 19  4 2025  2 28>
+         , <  1 10 10  181 20  1 2025  3  1>
+	   # Then The Birth of the Báb and The Birth of Bahá’u’lláh
+         , <  1 10 14  185 12  5 2028 10 19>
+         , <  1 10 14  185 12  6 2028 10 20>
+         , <  1 10 18  189 13  2 2032 11  4>
+         , <  1 10 18  189 13  3 2032 11  5>
+         , <  1 11 10  200 12 19 2043 11  3>
+         , <  1 11 10  200 13  1 2043 11  4>
+
+  );
+}
