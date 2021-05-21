@@ -7,21 +7,21 @@ use Date::Calendar::Bahai;
 
 my @test-data = load-data();
 
-plan 2 × @test-data.elems;
+plan 3 × @test-data.elems;
 
-#for @test-data -> $datum {
-#  my ($major, $cycle, $cycle-y, $y-bh, $m-bh, $d-bh, $y-gr, $m-gr, $d-gr) = $datum;
-#
-#  my Date::Calendar::Bahai
-#          $date-bh;
-#  my Date $date-gr;
-#
-#  $date-gr .= new($y-gr, $m-gr, $d-gr);
-#  $date-bh .= new-from-date($date-gr);
-#
-#  my Str $expected = sprintf("%04d-%02d-%02d", $y-bh, $m-bh, $d-bh);
-#  is($date-bh.gist, $expected);
-#}
+for @test-data -> $datum {
+  my ($major, $cycle, $cycle-y, $y-bh, $m-bh, $d-bh, $y-gr, $m-gr, $d-gr) = $datum;
+
+  my Date::Calendar::Bahai
+          $date-bh;
+  my Date $date-gr;
+
+  $date-gr .= new($y-gr, $m-gr, $d-gr);
+  $date-bh .= new-from-date($date-gr);
+
+  my Str $expected = sprintf("%04d-%02d-%02d", $y-bh, $m-bh, $d-bh);
+  is($date-bh.gist, $expected);
+}
 
 for @test-data -> $datum {
   my ($major, $cycle, $cycle-y, $y-bh, $m-bh, $d-bh, $y-gr, $m-gr, $d-gr) = $datum;

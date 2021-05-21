@@ -108,6 +108,39 @@ method cycle-year-name {
   Date::Calendar::Bahai::Names::cycle-year-name($.locale, $.cycle-year);
 }
 
+method new-from-date($date) {
+  $.new-from-daycount($date.daycount);
+}
+
+method new-from-daycount(Int $daycount) {
+  my Date $bahai-epoch .= new(1844, 3, 21);
+  my Int  $shifted-doy;  # shifted by 1, e.g. Naw-Rúz (or 1st Bahá) is 0 and not 1
+  my Str  $class = $.^name;
+
+  # First estimated value is deliberately off by 1, because of pre-decrement
+  # but in some cases, it may be off by 2.
+  # After 365 leap days have been accumulated, that is after 1460 years, the estimated
+  # value may even be off by 3.
+  my Int $year = 1 + (($daycount - $bahai-epoch.daycount + 1) / 365).ceiling;
+  loop {
+    -- $year ;
+    my $naw-ruz = ::($class).new(year => $year, month => 1, day => 1);
+    $shifted-doy = $daycount - $naw-ruz.daycount;
+    last if $shifted-doy ≥ 0;
+  }
+  my $shifted-last-ayyam-doy = 345; # 4th Ayyám-i-Há is the 346th day of the year
+  if $.is-leap($year) {
+    $shifted-last-ayyam-doy = 346; # 5th Ayyám-i-Há is the 347th day of a leap year
+  }
+  if $shifted-doy > $shifted-last-ayyam-doy {
+    return $.new(year => $year, month => 20, day => $shifted-doy - $shifted-last-ayyam-doy);
+  }
+  else {
+    my ($day, $month) = $shifted-doy.polymod(19) «+» 1;
+    return $.new(year => $year, month => $month, day => $day);
+  }
+}
+
 method to-date($class = 'Date') {
   # See "Learning Perl 6" page 177
   my $d = ::($class).new-from-daycount($.daycount);
