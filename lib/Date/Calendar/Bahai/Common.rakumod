@@ -197,6 +197,12 @@ sub year-number(Int $major-cycle, Int $cycle, Int $cycle-year --> Int) {
   return (($major-cycle - 1) × 19 + ($cycle - 1)) × 19 + $cycle-year;
 }
 
+method specific-format { %(  y => { $.cycle-year },
+                            Ey => { Date::Calendar::Bahai::Names::cycle-year-name($.locale, $.cycle-year); },
+                             k => { $.cycle },
+                             K => { $.major-cycle }
+                            ) }
+
 =begin pod
 
 =head1 NAME
