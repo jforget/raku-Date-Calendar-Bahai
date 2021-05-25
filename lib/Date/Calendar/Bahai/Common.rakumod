@@ -81,7 +81,39 @@ method !build-from-args1(Int $year, Int $month, Int $day, Str $locale) {
   $!day-of-week = $dow;
   $!day-of-year = $doy;
   $!daycount    = $daycount;
-  # TODO : fill the other attributes
+
+  # computing week-related derived attributes
+  my Int $doy-fidal = $doy - $dow + 4; # day-of-year value for the nearest Fiḍál / Tuesday
+  my Int $week-year = $year;
+  if $doy-fidal ≤ 0 {
+    -- $week-year;
+    if self.is-leap($week-year) {
+      $doy += 366;
+    }
+    else {
+      $doy += 365;
+    }
+    $doy-fidal = $doy - $dow + 4;
+  }
+  else {
+    my Int $year-length;
+    if self.is-leap($week-year) {
+      $year-length = 366;
+    }
+    else {
+      $year-length = 365;
+    }
+    if $doy-fidal > $year-length {
+      $doy      -= $year-length;
+      $doy-fidal = $doy - $dow + 4;
+      ++ $week-year;
+    }
+  }
+  my Int $week-number = ($doy-fidal / 7).ceiling;
+
+  # storing week-related derived attributes
+  $!week-number = $week-number;
+  $!week-year   = $week-year;
 }
 
 method gist {
