@@ -1,5 +1,5 @@
 use v6.c;
-unit module Date::Calendar::Bahai::Names:ver<0.0.1>:auth<cpan:JFORGET>;
+unit module Date::Calendar::Bahai::Names:ver<0.0.2>:auth<cpan:JFORGET>;
 
 my %month-names = 'ar' => ( "Bahá"     , "Jalál"  , "Jamál" , "‘Aẓamat"   , "Núr"
                           , "Rahmat"   , "Kalimát", "Kamál" , "Asmá'"     , "'Izzat"
