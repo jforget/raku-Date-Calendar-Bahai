@@ -1,5 +1,5 @@
 use v6.c;
-unit module Date::Calendar::Bahai::Names:ver<0.0.2>:auth<cpan:JFORGET>;
+unit module Date::Calendar::Bahai::Names:ver<0.0.2>:auth<zef:jforget>:api<0>;
 
 my %month-names = 'ar' => ( "Bahá"     , "Jalál"  , "Jamál" , "‘Aẓamat"   , "Núr"
                           , "Rahmat"   , "Kalimát", "Kamál" , "Asmá'"     , "'Izzat"
@@ -137,11 +137,11 @@ L<https://icalendrier.fr/calendriers-saga/calendriers/baha-i> (in French)
 
 =head1 AUTHOR
 
-Jean Forget <JFORGET at cpan dot org>
+Jean Forget <J2N-FORGET at orange dot fr>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2021 Jean Forget, all rights reserved
+Copyright (c) 2021, 2024 Jean Forget, all rights reserved
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

@@ -4,7 +4,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Bahai::Names;
 use Date::Calendar::Bahai::Common;
 
-unit class Date::Calendar::Bahai:ver<0.0.2>:auth<cpan:JFORGET>
+unit class Date::Calendar::Bahai:ver<0.0.2>:auth<zef:jforget>:api<0>
       does Date::Calendar::Bahai::Common
       does Date::Calendar::Strftime;
 
@@ -515,11 +515,11 @@ L<https://icalendrier.fr/calendriers-saga/calendriers/baha-i> (in French)
 
 =head1 AUTHOR
 
-Jean Forget <JFORGET@cpan.org>
+Jean Forget <J2N-FORGET at orange dot fr>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2021 Jean Forget, all rights reserved.
+Copyright (c) 2021, 2024 Jean Forget, all rights reserved.
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

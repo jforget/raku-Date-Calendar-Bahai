@@ -1,7 +1,9 @@
 Revision history for Date-Calendar-Bahai
 
 0.0.2 released on...
-    - xxx
+    - add an "api" property to the classes
+    - migration from CPAN6 to zef
+    - fewer t/*.t tests and adding xt/*.t tests
 
 0.0.1 released on Kamál 15 ‘Aẓamat Abad, Váḥid 10, Kull-i-S͟hayʼ (2021-05-31 in Gregorian)
     - Initial version
