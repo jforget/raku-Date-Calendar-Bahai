@@ -54,9 +54,9 @@ $dt-greg  .= new(2021, 5, 17);
 $dt-bahai .= new-from-date($dt-greg);
 
 say $dt-bahai;
-# --> xxxx-xx-xx
+# --> 0178-04-02
 say $dt-bahai.strftime("%A %d %B %Y");
-# --> xxxxxxxxxxxxxxxxxx
+# --> Kamál 02 ‘Aẓamat 0178
 
 =end code
 
@@ -71,7 +71,7 @@ $dt-bahai .= new(year => 178, month => 1, day => 1);
 $dt-greg   = $dt-bahai.to-date;
 
 say $dt-greg;
-# --> xxxx-xx-xx
+# --> 2021-03-20
 =end code
 
 =head1 DESCRIPTION
@@ -97,42 +97,42 @@ Please see L<Date::Calendar::Bahai> for the complete documentation.
 
 =head2 Raku Software
 
-L<Date::Calendar::Strftime>
+L<Date::Calendar::Strftime|https://raku.land/zef:jforget/Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
 
-L<Date::Calendar::Gregorian>
+L<Date::Calendar::Gregorian|https://raku.land/zef:jforget/Date::Calendar::Gregorian>
 or L<https://github.com/jforget/raku-Date-Calendar-Gregorian>
 
-L<Date::Calendar::Julian>
+L<Date::Calendar::Julian|https://raku.land/zef:jforget/Date::Calendar::Julian>
 or L<https://github.com/jforget/raku-Date-Calendar-Julian>
 
-L<Date::Calendar::Hebrew>
+L<Date::Calendar::Hebrew|https://raku.land/zef:jforget/Date::Calendar::Hebrew>
 or L<https://github.com/jforget/raku-Date-Calendar-Hebrew>
 
-L<Date::Calendar::Hijri>
+L<Date::Calendar::Hijri|https://raku.land/zef:jforget/Date::Calendar::Hijri>
 or L<https://github.com/jforget/raku-Date-Calendar-Hijri>
 
-L<Date::Calendar::Persian>
+L<Date::Calendar::Persian|https://raku.land/zef:jforget/Date::Calendar::Persian>
 or L<https://github.com/jforget/raku-Date-Calendar-Persian>
 
-L<Date::Calendar::CopticEthiopic>
+L<Date::Calendar::CopticEthiopic|https://raku.land/zef:jforget/Date::Calendar::CopticEthiopic>
 or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
 
-L<Date::Calendar::MayaAztec>
+L<Date::Calendar::MayaAztec|https://raku.land/zef:jforget/Date::Calendar::MayaAztec>
 or L<https://github.com/jforget/raku-Date-Calendar-MayaAztec>
 
-L<Date::Calendar::FrenchRevolutionary>
+L<Date::Calendar::FrenchRevolutionary|https://raku.land/zef:jforget/Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
 
 =head2 Perl 5 Software
 
-L<Date::Bahai::Simple>
+L<Date::Bahai::Simple|https://metacpan.org/pod/Date::Bahai::Simple>
 
 =head2 Other Software
 
 date(1), strftime(3)
 
-F<calendar/cal-bahai.el>  in emacs  or xemacs.
+c<calendar/cal-bahai.el>  in emacs  or xemacs.
 
 CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>

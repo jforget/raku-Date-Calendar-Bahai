@@ -105,13 +105,13 @@ L<https://en.wikipedia.org/wiki/Bah%C3%A1%27%C3%AD_calendar>
 
 =head2 Perl 5 Software
 
-L<Date::Bahai::Simple>
+L<Date::Bahai::Simple|https://metacpan.org/pod/Date::Bahai::Simple>
 
 =head2 Other Software
 
 date(1), strftime(3)
 
-F<calendar/cal-bahai.el>  in emacs  or xemacs.
+C<calendar/cal-bahai.el>  in emacs  or xemacs.
 
 CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>

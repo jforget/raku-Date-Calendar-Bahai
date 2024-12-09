@@ -70,6 +70,32 @@ say $dt-greg;
 # --> 2021-05-16
 =end code
 
+Converting a date while caring about sunset:
+
+=begin code :lang<raku>
+
+use Date::Calendar::Strftime;
+use Date::Calendar::Gregorian;
+use Date::Calendar::Bahai;
+
+my Date::Calendar::Bahai $dt-bahai;
+my Date                  $dt-greg;
+
+$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => after-sunset);
+$dt-greg   = $dt-bahai.to-date;
+say $dt-greg.gist;   # --> 2024-11-13
+
+# on the other hand
+$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => before-sunrise);
+$dt-greg   = $dt-bahai.to-date;
+say $dt-greg.gist;   # --> 2024-11-14
+
+$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => daylight);
+$dt-greg   = $dt-bahai.to-date;
+say $dt-greg.gist;   # --> 2024-11-14
+
+=end code
+
 =head1 DESCRIPTION
 
 C<Date::Calendar::Bahai> is a class  representing dates in the initial
@@ -79,10 +105,8 @@ allows you  to convert  dates from Gregorian  or from  other calendars
 into Baháʼí.
 
 In the Baháʼí  calendar, days begin at sunset. When  converting from /
-to  calendar   with  midnight-to-midnight   days,  we  use   the  main
-overlapping period, midnight  to sunset. For example,  Kamál 1 ‘Aẓamat
-178 begins on 16 May 2021 at sunset and ends on 17 May 2021 at sunset,
-the module gives only 17 May.
+to calendar with midnight-to-midnight days,  be sure to add the proper
+C<daypart> build parameter to get the proper converted date.
 
 The years  are numbered  in two different  ways: the  usual sequential
 count in  base 10, and  a set of  three embedded 19-year  cycles, each
@@ -122,7 +146,8 @@ calendar.
 =head3 new
 
 Create an  Baháʼí date by giving  the year, month and  day numbers and
-the C<locale> code.
+the C<locale>  code, plus optionally the  day part (C<before-sunrise>,
+C<daylight> or C<after-sunset>).
 
 The year can be specified either  by a single parameter C<year>, or by
 three parameters C<cycle-year>, C<cycle> and C<major-cycle>.
@@ -141,11 +166,13 @@ $dt-bahai .= new(major-cycle => 1, cycle => 10, cycle-year => 7, month => 3, day
 
 Build an  Baháʼí date by  cloning an  object from another  class. This
 other   class    can   be    the   core    class   C<Date>    or   any
-C<Date::Calendar::>R<xxx> class with a C<daycount> method.
+C<Date::Calendar::>R<xxx>  class   with  a  C<daycount>   method  and,
+hopefully, a C<daypart> method.
 
 =head3 new-from-daycount
 
-Build an Baháʼí date from the Modified Julian Day number.
+Build  an Baháʼí  date from  the Modified  Julian Day  number and  the
+C<daypart> value.
 
 =head2 Accessors
 
@@ -162,6 +189,18 @@ The numbers defining the date.
 The alternate definition of the year.
 
 For C<strftime>, see the specifiers C<%K>, C<%k> and C<%y>.
+
+=head3 daypart
+
+A  number indicating  which part  of the  day. This  number should  be
+filled   and   compared   with   the   following   subroutines,   with
+self-documenting names:
+
+=item before-sunrise
+=item daylight
+=item after-sunset
+
+For C<strftime>, see the specifiers C<%Ep>.
 
 =head3 month-name
 
@@ -239,7 +278,6 @@ if $dt-bahai.is-leap(180) {
 }
 
 =end code
-
 
 =head2 Other Methods
 
@@ -326,86 +364,103 @@ variants of the date attribute.
 
 The allowed type codes are:
 
-=defn C<%a>
+=defn %a
 
 The abbreviated day of week.
 
-=defn C<%A>
+=defn %A
 
 The full day of week name.
 
-=defn C<%b>
+=defn %b
 
 The abbreviated month name.
 
-=defn C<%B>
+=defn %B
 
 The full month name.
 
-=defn C<%d>
+=defn %d
 
 The day of the month as a decimal number (range 01 to 19).
 
-=defn C<%e>
+=defn %e
 
 Like C<%d>, the  day of the month  as a decimal number,  but a leading
 zero is replaced by a space.
 
-=defn C<%f>
+=defn %f
 
 The month as a decimal number (1  to 20). Unlike C<%m>, a leading zero
 is replaced by a space.
 
-=defn C<%F>
+=defn %F
 
 Equivalent to %Y-%m-%d (the ISO 8601 date format)
 
-=defn C<%G>
+=defn %G
 
 The "week year"  as a decimal number. Mostly similar  to C<%Y>, but it
 may differ  on the very  first days  of the year  or on the  very last
 days. Analogous to the year number  in the so-called "ISO date" format
 for Gregorian dates.
 
-=defn C<%j>
+=defn %j
 
 The day of the year as a decimal number (range 001 to 366).
 
-=defn C<%k>
+=defn %k
 
 The cycle as a decimal number (range 1 to 19).
 
-=defn C<%K>
+=defn %K
 
 The major cycle as a decimal number.
 
-=defn C<%m>
+=defn %m
 
 The month as a two-digit decimal  number (range 01 to 20), including a
 leading zero if necessary.
 
-=defn C<%n>
+=defn %n
 
 A newline character.
 
-=defn C<%t>
+=defn %Ep
+
+Gives a 1-char string representing the day part:
+
+=item C<☾> or C<U+263E> before sunrise,
+=item C<☼> or C<U+263C> during daylight,
+=item C<☽> or C<U+263D> after sunset.
+
+Rationale: in  C or in  other programming languages,  when C<strftime>
+deals with a date-time object, the day is split into two parts, before
+noon and  after noon. The  C<%p> specifier  reflects this by  giving a
+C<"AM"> or C<"PM"> string.
+
+The  3-part   splitting  in   the  C<Date::Calendar::>R<xxx>   may  be
+considered as  an alternate  splitting of  a day.  To reflect  this in
+C<strftime>, we use an alternate version of C<%p>, therefore C<%Ep>.
+
+=defn %t
 
 A tab character.
 
-=defn C<%u>
+=defn %u
 
 The day of week as a 1..7 number.
 
-=defn C<%V>
+=defn %V
 
 The week  number as defined above,  similar to the week  number in the
 so-called "ISO date" format for Gregorian dates.
 
-=defn C<%Y>
+=defn %Y
 
 The year as a decimal number.
 
-=defn C<%y>
+=defn %y
 
 The cycle-year as a decimal number.
 
@@ -418,12 +473,11 @@ of a I<short variant> here is a legitimate one.
 
 See also C<%k> and C<%K>.
 
-=defn C<%Ey>
+=defn %Ey
 
 The name of the cycle-year.
 
-
-=defn C<%%>
+=defn %%
 
 A literal `%' character.
 
@@ -449,48 +503,81 @@ class silently reverts to the arithmetic version.
 Some months has the same name as  week days. Be careful and do not mix
 them.
 
+=head2 Security issues
+
+Another  issue,   as  explained  in   the  C<Date::Calendar::Strftime>
+documentation. Please ensure that  format-string passed to C<strftime>
+comes from  a trusted source.  For example, by including  a outrageous
+length in  a C<strftime> specifier, you  can drain your PC's  RAM very
+fast.
+
+=head2 Relations with :ver<0.0.x> classes
+
+Version 0.1.0 (and API 1) was  introduced to ease the conversions with
+other calendars in  which the day is  defined as midnight-to-midnight.
+If all C<Date::Calendar::>R<xxx> classes use  version 0.1.x and API 1,
+the conversions will be correct. But if some C<Date::Calendar::>R<xxx>
+classes use version 0.0.x and API 0, there might be problems.
+
+A date from a 0.0.x class has no C<daypart> attribute. But when "seen"
+from  a  0.1.x class,  the  0.0.x  date  seems  to have  a  C<daypart>
+attribute equal to C<daylight>. When converted from a 0.1.x class to a
+0.0.x  class,  the  date  may  just  shift  from  C<after-sunset>  (or
+C<before-sunrise>) to C<daylight>, or it  may shift to the C<daylight>
+part of  the prior (or  next) date. This  means that a  roundtrip with
+cascade conversions  may give the  starting date,  or it may  give the
+date prior or after the starting date.
+
+=head2 Time
+
+This module  and the C<Date::Calendar::>R<xxx> associated  modules are
+still date  modules, they are not  date-time modules. The user  has to
+give  the C<daypart>  attribute  as a  value among  C<before-sunrise>,
+C<daylight> or C<after-sunset>. There is no provision to give a HHMMSS
+time and convert it to a C<daypart> parameter.
+
 =head1 SEE ALSO
 
 =head2 Raku Software
 
-L<Date::Calendar::Strftime>
+L<Date::Calendar::Strftime|https://raku.land/zef:jforget/Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
 
-L<Date::Calendar::Gregorian>
+L<Date::Calendar::Gregorian|https://raku.land/zef:jforget/Date::Calendar::Gregorian>
 or L<https://github.com/jforget/raku-Date-Calendar-Gregorian>
 
-L<Date::Calendar::Julian>
+L<Date::Calendar::Julian|https://raku.land/zef:jforget/Date::Calendar::Julian>
 or L<https://github.com/jforget/raku-Date-Calendar-Julian>
 
-L<Date::Calendar::Hebrew>
+L<Date::Calendar::Hebrew|https://raku.land/zef:jforget/Date::Calendar::Hebrew>
 or L<https://github.com/jforget/raku-Date-Calendar-Hebrew>
 
-L<Date::Calendar::Hijri>
+L<Date::Calendar::Hijri|https://raku.land/zef:jforget/Date::Calendar::Hijri>
 or L<https://github.com/jforget/raku-Date-Calendar-Hijri>
 
-L<Date::Calendar::Persian>
+L<Date::Calendar::Persian|https://raku.land/zef:jforget/Date::Calendar::Persian>
 or L<https://github.com/jforget/raku-Date-Calendar-Persian>
 
-L<Date::Calendar::CopticEthiopic>
+L<Date::Calendar::CopticEthiopic|https://raku.land/zef:jforget/Date::Calendar::CopticEthiopic>
 or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
 
-L<Date::Calendar::MayaAztec>
+L<Date::Calendar::MayaAztec|https://raku.land/zef:jforget/Date::Calendar::MayaAztec>
 or L<https://github.com/jforget/raku-Date-Calendar-MayaAztec>
 
-L<Date::Calendar::FrenchRevolutionary>
+L<Date::Calendar::FrenchRevolutionary|https://raku.land/zef:jforget/Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
 
 =head2 Perl 5 Software
 
-L<Date::Converter>
+L<Date::Converter|https://metacpan.org/pod/Date::Converter>
 
-L<Date::Bahai::Simple>
+L<Date::Bahai::Simple|https://metacpan.org/pod/Date::Bahai::Simple>
 
 =head2 Other Software
 
 date(1), strftime(3)
 
-F<calendar/cal-bahai.el>  in emacs  or xemacs.
+C<calendar/cal-bahai.el>  in emacs  or xemacs.
 
 CALENDRICA 4.0 -- Common Lisp, which can be downloaded in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>
