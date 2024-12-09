@@ -8,15 +8,16 @@ unit class Date::Calendar::Bahai:ver<0.1.0>:auth<zef:jforget>:api<1>
       does Date::Calendar::Bahai::Common
       does Date::Calendar::Strftime;
 
-multi method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'ar') {
+multi method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'ar', Int :$daypart = daylight()) {
   self!check-build-args1($year, $month, $day, $locale);
-  self!build-from-args1( $year, $month, $day, $locale);
+  self!build-from-args1( $year, $month, $day, $locale, $daypart);
 }
 
 multi method BUILD(Int:D :$major-cycle, Int:D :$cycle, Int:D :$cycle-year
-                 , Int:D :$month,       Int:D :$day,   Str   :$locale = 'ar') {
+                 , Int:D :$month,       Int:D :$day,   Str   :$locale = 'ar'
+                 , Int   :$daypart = daylight()) {
   self!check-build-args2($major-cycle, $cycle, $cycle-year, $month, $day, $locale);
-  self!build-from-args2( $major-cycle, $cycle, $cycle-year, $month, $day, $locale);
+  self!build-from-args2( $major-cycle, $cycle, $cycle-year, $month, $day, $locale, $daypart);
 }
 
 # If $bahai-year is given, gives the March day number of Naw-Rúz for the given year.

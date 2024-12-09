@@ -1,0 +1,152 @@
+#
+# Checking the conversions with newer 0.1.x modules
+#
+
+use v6.d;
+use Test;
+use lib '../version-new/lib';
+use lib 'lib';
+use Date::Calendar::Strftime:ver<0.1.0>;
+use Date::Calendar::Aztec;
+use Date::Calendar::Aztec::Cortes;
+use Date::Calendar::Bahai;
+use Date::Calendar::Bahai::Astronomical;
+use Date::Calendar::Coptic;
+use Date::Calendar::Ethiopic;
+use Date::Calendar::Hebrew;
+use Date::Calendar::Hijri;
+use Date::Calendar::Gregorian;
+use Date::Calendar::FrenchRevolutionary;
+use Date::Calendar::FrenchRevolutionary::Arithmetic;
+use Date::Calendar::FrenchRevolutionary::Astronomical;
+use Date::Calendar::Julian;
+use Date::Calendar::Julian::AUC;
+use Date::Calendar::Maya;
+use Date::Calendar::Maya::Astronomical;
+use Date::Calendar::Maya::Spinden;
+use Date::Calendar::Persian;
+use Date::Calendar::Persian::Astronomical;
+
+my $ver-ba = '0.1.0';
+my @data  = (
+       (181,  8, 13, after-sunset,   'ba', "Fiḍál 13 Kal 0181 ☽"         , "Fid 13 Kal 0181 ☽", "Gregorian: 2024-08-12")
+     , (181,  8, 13, before-sunrise, 'ba', "Fiḍál 13 Kal 0181 ☾"         , "Fid 13 Kal 0181 ☾", "Gregorian: 2024-08-13")
+     , (181,  8, 13, daylight,       'ba', "Fiḍál 13 Kal 0181 ☼"         , "Fid 13 Kal 0181 ☼", "Gregorian: 2024-08-13")
+     , (181, 18, 11, after-sunset,   'be', "Kamál 12 Mul 0181 ☽"         , "Kam 11 Mul 0181 ☽", "Gregorian: 2025-02-16")
+     , (181, 18, 11, before-sunrise, 'be', "Kamál 12 Mul 0181 ☾"         , "Kam 11 Mul 0181 ☾", "Gregorian: 2025-02-17")
+     , (181, 18, 11, daylight,       'be', "Kamál 12 Mul 0181 ☼"         , "Kam 11 Mul 0181 ☼", "Gregorian: 2025-02-17")
+     , (181, 15, 12, after-sunset,   'co', "Pesnau 14 Kia 1741 ☽"        , "Kam 12 Mal 0181 ☽", "Gregorian: 2024-12-22")
+     , (181, 15, 12, before-sunrise, 'co', "Pesnau 14 Kia 1741 ☾"        , "Kam 12 Mal 0181 ☾", "Gregorian: 2024-12-23")
+     , (181, 15, 12, daylight,       'co', "Pesnau 14 Kia 1741 ☼"        , "Kam 12 Mal 0181 ☼", "Gregorian: 2024-12-23")
+     , (181, 11, 16, after-sunset,   'et', "Ehud 02 Teq 2017 ☽"          , "Jal 16 Mat 0181 ☽", "Gregorian: 2024-10-11")
+     , (181, 11, 16, before-sunrise, 'et', "Ehud 02 Teq 2017 ☾"          , "Jal 16 Mat 0181 ☾", "Gregorian: 2024-10-12")
+     , (181, 11, 16, daylight,       'et', "Ehud 02 Teq 2017 ☼"          , "Jal 16 Mat 0181 ☼", "Gregorian: 2024-10-12")
+     , (179,  3,  8, after-sunset,   'fr', "Quintidi 15 Flo 0230 ☽"      , "Isj 08 Jam 0179 ☽", "Gregorian: 2022-05-04")
+     , (179,  3,  8, before-sunrise, 'fr', "Sextidi 16 Flo 0230 ☾"       , "Isj 08 Jam 0179 ☾", "Gregorian: 2022-05-05")
+     , (179,  3,  8, daylight,       'fr', "Sextidi 16 Flo 0230 ☼"       , "Isj 08 Jam 0179 ☼", "Gregorian: 2022-05-05")
+     , (181, 17,  7, after-sunset,   'fa', "Quintidi 05 Plu 0233 ☽"      , "Jal 07 Sul 0181 ☽", "Gregorian: 2025-01-24")
+     , (181, 17,  7, before-sunrise, 'fa', "Sextidi 06 Plu 0233 ☾"       , "Jal 07 Sul 0181 ☾", "Gregorian: 2025-01-25")
+     , (181, 17,  7, daylight,       'fa', "Sextidi 06 Plu 0233 ☼"       , "Jal 07 Sul 0181 ☼", "Gregorian: 2025-01-25")
+     , (178,  4, 18, after-sunset,   'fe', "Quartidi 14 Pra 0229 ☽"      , "Isj 18 Aza 0178 ☽", "Gregorian: 2021-06-02")
+     , (178,  4, 18, before-sunrise, 'fe', "Quintidi 15 Pra 0229 ☾"      , "Isj 18 Aza 0178 ☾", "Gregorian: 2021-06-03")
+     , (178,  4, 18, daylight,       'fe', "Quintidi 15 Pra 0229 ☼"      , "Isj 18 Aza 0178 ☼", "Gregorian: 2021-06-03")
+     , (181, 13, 11, after-sunset,   'gr', "Wednesday 13 Nov 2024 ☽"     , "Isj 11 Qud 0181 ☽", "Gregorian: 2024-11-13")
+     , (181, 13, 11, before-sunrise, 'gr', "Thursday 14 Nov 2024 ☾"      , "Isj 11 Qud 0181 ☾", "Gregorian: 2024-11-14")
+     , (181, 13, 11, daylight,       'gr', "Thursday 14 Nov 2024 ☼"      , "Isj 11 Qud 0181 ☼", "Gregorian: 2024-11-14")
+     , (179, 14, 17, after-sunset,   'he', "Yom Shishi 15 Kis 5783 ☽"    , "Isq 17 Qaw 0179 ☽", "Gregorian: 2022-12-08")
+     , (179, 14, 17, before-sunrise, 'he', "Yom Shishi 15 Kis 5783 ☾"    , "Isq 17 Qaw 0179 ☾", "Gregorian: 2022-12-09")
+     , (179, 14, 17, daylight,       'he', "Yom Shishi 15 Kis 5783 ☼"    , "Isq 17 Qaw 0179 ☼", "Gregorian: 2022-12-09")
+     , (179, 12, 15, after-sunset,   'hi', "Yaum al-Ahad 04 R.T 1444 ☽"  , "Jam 15 Ilm 0179 ☽", "Gregorian: 2022-10-29")
+     , (179, 12, 15, before-sunrise, 'hi', "Yaum al-Ahad 04 R.T 1444 ☾"  , "Jam 15 Ilm 0179 ☾", "Gregorian: 2022-10-30")
+     , (179, 12, 15, daylight,       'hi', "Yaum al-Ahad 04 R.T 1444 ☼"  , "Jam 15 Ilm 0179 ☼", "Gregorian: 2022-10-30")
+     , (180,  6, 14, after-sunset,   'jl', "Thursday 23 Jun 2023 ☽"      , "Isq 14 Rah 0180 ☽", "Gregorian: 2023-07-06")
+     , (180,  6, 14, before-sunrise, 'jl', "Friday 24 Jun 2023 ☾"        , "Isq 14 Rah 0180 ☾", "Gregorian: 2023-07-07")
+     , (180,  6, 14, daylight,       'jl', "Friday 24 Jun 2023 ☼"        , "Isq 14 Rah 0180 ☼", "Gregorian: 2023-07-07")
+     , (181, 18, 18, after-sunset,   'jc', "Sunday 10 Feb 2778 ☽"        , "Kam 18 Mul 0181 ☽", "Gregorian: 2025-02-23")
+     , (181, 18, 18, before-sunrise, 'jc', "Monday 11 Feb 2778 ☾"        , "Kam 18 Mul 0181 ☾", "Gregorian: 2025-02-24")
+     , (181, 18, 18, daylight,       'jc', "Monday 11 Feb 2778 ☼"        , "Kam 18 Mul 0181 ☼", "Gregorian: 2025-02-24")
+            );
+
+# for later tests
+my @data-to-do = (
+       (179, 16,  9, after-sunset,   'pe', "Shanbe 17 Dei 1401 ☽"        , "Jam 09 Sha 0179 ☽", "Gregorian: 2023-01-07")
+     , (179, 16,  9, before-sunrise, 'pe', "Yek-shanbe 18 Dei 1401 ☾"    , "Jam 09 Sha 0179 ☾", "Gregorian: 2023-01-08")
+     , (179, 16,  9, daylight,       'pe', "Yek-shanbe 18 Dei 1401 ☼"    , "Jam 09 Sha 0179 ☼", "Gregorian: 2023-01-08")
+     , (181, 13, 17, after-sunset,   'pa', "Se shanbe 29 Aba 1403 ☽"     , "Ida 17 Qud 0181 ☽", "Gregorian: 2024-11-19")
+     , (181, 13, 17, before-sunrise, 'pa', "Chahar shanbe 30 Aba 1403 ☾" , "Ida 17 Qud 0181 ☾", "Gregorian: 2024-11-20")
+     , (181, 13, 17, daylight,       'pa', "Chahar shanbe 30 Aba 1403 ☼" , "Ida 17 Qud 0181 ☼", "Gregorian: 2024-11-20")
+            );
+my @data-maya = (
+       (181, 19,  3, after-sunset,   'm0', "14 Kayab 10 Eb"             , "Isq 03 Ayy 0181 ☽", "Gregorian: 2025-02-27")
+     , (181, 19,  3, before-sunrise, 'm0', "14 Kayab 10 Eb"             , "Isq 03 Ayy 0181 ☾", "Gregorian: 2025-02-28")
+     , (181, 19,  3, daylight,       'm0', "15 Kayab 10 Eb"             , "Isq 03 Ayy 0181 ☼", "Gregorian: 2025-02-28")
+     , (181,  7,  4, after-sunset,   'm1', " 5 Xul 2 Akbal"             , "Fid 04 Kal 0181 ☽", "Gregorian: 2024-07-15")
+     , (181,  7,  4, before-sunrise, 'm1', " 5 Xul 2 Akbal"             , "Fid 04 Kal 0181 ☾", "Gregorian: 2024-07-16")
+     , (181,  7,  4, daylight,       'm1', " 6 Xul 2 Akbal"             , "Fid 04 Kal 0181 ☼", "Gregorian: 2024-07-16")
+     , (180, 13, 14, after-sunset,   'm2', " 9 Ceh 8 Ik"                , "Isq 14 Qud 0180 ☽", "Gregorian: 2023-11-16")
+     , (180, 13, 14, before-sunrise, 'm2', " 9 Ceh 8 Ik"                , "Isq 14 Qud 0180 ☾", "Gregorian: 2023-11-17")
+     , (180, 13, 14, daylight,       'm2', "10 Ceh 8 Ik"                , "Isq 14 Qud 0180 ☼", "Gregorian: 2023-11-17")
+     , (179, 16,  5, after-sunset,   'a0', "12 Huei Tozoztli 4 Miquiztli", "Ida 05 Sha 0179 ☽", "Gregorian: 2023-01-03")
+     , (179, 16,  5, before-sunrise, 'a0', "12 Huei Tozoztli 4 Miquiztli", "Ida 05 Sha 0179 ☾", "Gregorian: 2023-01-04")
+     , (179, 16,  5, daylight,       'a0', "13 Huei Tozoztli 4 Miquiztli", "Ida 05 Sha 0179 ☼", "Gregorian: 2023-01-04")
+     , (178, 15, 14, after-sunset,   'a1', " 5 Huei Tozoztli 9 Ocelotl" , "Jal 14 Mal 0178 ☽", "Gregorian: 2021-12-24")
+     , (178, 15, 14, before-sunrise, 'a1', " 5 Huei Tozoztli 9 Ocelotl" , "Jal 14 Mal 0178 ☾", "Gregorian: 2021-12-25")
+     , (178, 15, 14, daylight,       'a1', " 6 Huei Tozoztli 9 Ocelotl" , "Jal 14 Mal 0178 ☼", "Gregorian: 2021-12-25")
+
+            );
+
+my %class =   a0 => 'Date::Calendar::Aztec'
+            , a1 => 'Date::Calendar::Aztec::Cortes'
+            , ba => 'Date::Calendar::Bahai'
+            , be => 'Date::Calendar::Bahai::Astronomical'
+            , gr => 'Date::Calendar::Gregorian'
+            , co => 'Date::Calendar::Coptic'
+            , et => 'Date::Calendar::Ethiopic'
+            , fr => 'Date::Calendar::FrenchRevolutionary'
+            , fa => 'Date::Calendar::FrenchRevolutionary::Arithmetic'
+            , fe => 'Date::Calendar::FrenchRevolutionary::Astronomical'
+            , he => 'Date::Calendar::Hebrew'
+            , hi => 'Date::Calendar::Hijri'
+            , jl => 'Date::Calendar::Julian'
+            , jc => 'Date::Calendar::Julian::AUC'
+            , m0 => 'Date::Calendar::Maya'
+            , m1 => 'Date::Calendar::Maya::Astronomical'
+            , m2 => 'Date::Calendar::Maya::Spinden'
+            , pe => 'Date::Calendar::Persian'
+            , pa => 'Date::Calendar::Persian::Astronomical'
+            ;
+
+plan 12 × @data.elems;
+
+for (@data) -> $datum {
+  my ($year, $month, $day, $daypart, $cal, $str2, $str3) = $datum;
+  my Date::Calendar::Bahai $d1 .= new(year => $year, month => $month, day => $day, daypart => $daypart);
+
+  # push-push
+  my $d2 = $d1.to-date(%class{$cal});
+  is($d2.strftime("%A %d %b %Y %Ep"), $str2, "testing push with $str2");
+  is($d2.^ver.Str.substr(0, 4), '0.1.');
+  my $d3 = $d2.to-date(%class<ba>);
+  is($d3.strftime("%a %d %b %Y %Ep"), $str3, "testing push-push with $str2 and $str3");
+  is($d3.^ver, $ver-ba);
+
+  # push-pull
+  my Date::Calendar::Bahai $d4 .= new-from-date($d2);
+  is($d4.strftime("%a %d %b %Y %Ep"), $str3, "testing push-pull with $str2 and $str3");
+  is($d4.^ver, $ver-ba);
+
+  # pull-push
+  my $d5 = ::(%class{$cal}).new-from-date($d1);
+  is($d5.strftime("%A %d %b %Y %Ep"), $str2, "testing pull with $str2");
+  is($d5.^ver.Str.substr(0, 4), '0.1.');
+  my $d6 = $d5.to-date(%class<ba>);
+  is($d6.strftime("%a %d %b %Y %Ep"), $str3, "testing pull-push with $str2 and $str3");
+  is($d6.^ver, $ver-ba);
+
+  # pull-pull
+  my Date::Calendar::Bahai $d7 .= new-from-date($d5);
+  is($d7.strftime("%a %d %b %Y %Ep"), $str3, "testing pull-pull with $str2 and $str3");
+  is($d7.^ver, $ver-ba);
+}
+
+done-testing;

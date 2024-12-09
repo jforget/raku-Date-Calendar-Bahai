@@ -2,6 +2,7 @@
 # Checking the attributes of dates built with year, month, day values
 #
 use Test;
+use Date::Calendar::Strftime;
 use Date::Calendar::Bahai;
 use Date::Calendar::Bahai::Astronomical;
 
@@ -18,13 +19,14 @@ my @tests = (('zzz',       3, 'zzz')
            , ('%b',        3, 'Aza')
            , ('%Y',        4, '0178')
            , ('%K-%k-%y',  6, '1-10-7')
-          , ('%K-%k-%02y', 7, '1-10-07')
+           , ('%K-%k-%02y', 7, '1-10-07')
+           , ('%Ep'       , 1, '☼');
        #   , ('%G',        4, '0178')
        #   , ('%V',        2, '08')
              );
 
 #plan 8 + 2 × @tests.elems + 5 + 5;
-plan 11 + 2 × @tests.elems + 29 + 2 + 2;
+plan 12 + 2 × @tests.elems + 29 + 2 + 2;
 
 # 1-10-07-04-02 = 0178-04-02 = 2021-05-18
 my Date::Calendar::Bahai $d .= new(year => 178, month => 4, day => 2);
@@ -42,6 +44,7 @@ is($d.day-of-year,  59);
 #is($d.week-year,   178);
 #is($d.week-number,   8);
 is($d.gist,  '0178-04-02');
+is($d.daypart,   daylight);
 
 for @tests -> $test {
   my ($format, $length, $expected) = $test;

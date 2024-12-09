@@ -9,6 +9,7 @@ has Int $.year;
 has Int $.month      where { 1 ≤ $_ ≤ 20 };
 has Int $.day        where { 1 ≤ $_ ≤ 19 };
 has Int $.daycount;
+has Int $.daypart where { before-sunrise() ≤ $_ ≤ after-sunset() };
 has Int $.day-of-year;
 has Int $.day-of-week;
 has Int $.week-number;
@@ -58,15 +59,16 @@ method !check-build-args2(Int $major-cycle, Int $cycle, Int $cycle-year, Int $mo
   self!check-build-args1(year-number($major-cycle, $cycle, $cycle-year), $month, $day, $locale);
 }
 
-method !build-from-args2(Int $major-cycle, Int $cycle, Int $cycle-year, Int $month, Int $day, Str $locale) {
-  self!build-from-args1(year-number($major-cycle, $cycle, $cycle-year), $month, $day, $locale);
+method !build-from-args2(Int $major-cycle, Int $cycle, Int $cycle-year, Int $month, Int $day, Str $locale, Int $daypart) {
+  self!build-from-args1(year-number($major-cycle, $cycle, $cycle-year), $month, $day, $locale, $daypart);
 }
 
-method !build-from-args1(Int $year, Int $month, Int $day, Str $locale) {
-  $!year   = $year;
-  $!month  = $month;
-  $!day    = $day;
-  $!locale = $locale;
+method !build-from-args1(Int $year, Int $month, Int $day, Str $locale, Int $daypart) {
+  $!year    = $year;
+  $!month   = $month;
+  $!day     = $day;
+  $!daypart = $daypart;
+  $!locale  = $locale;
 
   ($!cycle-year, $!cycle, $!major-cycle) = ($year - 1).polymod(19, 19) «+» 1;
   my Int $doy = $day + 19 × ($month - 1);
@@ -80,6 +82,10 @@ method !build-from-args1(Int $year, Int $month, Int $day, Str $locale) {
   my Int $dow      = ($daycount + 4) % 7 + 1;
   $!day-of-week = $dow;
   $!day-of-year = $doy;
+  if $daypart == after-sunset() {
+    # after computing $doy and not before!
+    --$daycount;
+  }
   $!daycount    = $daycount;
 
   # computing week-related derived attributes
@@ -141,10 +147,13 @@ method cycle-year-name {
 }
 
 method new-from-date($date) {
-  $.new-from-daycount($date.daycount);
+  $.new-from-daycount($date.daycount, daypart => $date.?daypart // daylight);
 }
 
-method new-from-daycount(Int $daycount) {
+method new-from-daycount(Int $daycount is copy, Int :$daypart = daylight) {
+  if $daypart == after-sunset() {
+    ++$daycount;
+  }
   my Date $bahai-epoch .= new(1844, 3, 21);
   my Int  $shifted-doy;  # shifted by 1, e.g. Naw-Rúz (or 1st Bahá) is 0 and not 1
   my Str  $class = $.^name;
@@ -165,17 +174,17 @@ method new-from-daycount(Int $daycount) {
     $shifted-last-ayyam-doy = 346; # 5th Ayyám-i-Há is the 347th day of a leap year
   }
   if $shifted-doy > $shifted-last-ayyam-doy {
-    return $.new(year => $year, month => 20, day => $shifted-doy - $shifted-last-ayyam-doy);
+    return $.new(year => $year, month => 20, day => $shifted-doy - $shifted-last-ayyam-doy, daypart => $daypart);
   }
   else {
     my ($day, $month) = $shifted-doy.polymod(19) «+» 1;
-    return $.new(year => $year, month => $month, day => $day);
+    return $.new(year => $year, month => $month, day => $day, daypart => $daypart);
   }
 }
 
 method to-date($class = 'Date') {
   # See "Learning Perl 6" page 177
-  my $d = ::($class).new-from-daycount($.daycount);
+  my $d = ::($class).new-from-daycount($.daycount, daypart => $.daypart);
   return $d;
 }
 
