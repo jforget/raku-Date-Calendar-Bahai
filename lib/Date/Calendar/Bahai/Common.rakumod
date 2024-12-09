@@ -3,7 +3,7 @@
 use Date::Calendar::Bahai::Names;
 use Date::Calendar::Strftime;
 
-unit role Date::Calendar::Bahai::Common:ver<0.0.2>:auth<zef:jforget>:api<0>;
+unit role Date::Calendar::Bahai::Common:ver<0.1.0>:auth<zef:jforget>:api<1>;
 
 has Int $.year;
 has Int $.month      where { 1 ≤ $_ ≤ 20 };

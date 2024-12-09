@@ -1,7 +1,7 @@
 #
 # Checking the checks at build time
 #
-use v6.c;
+use v6.d;
 use Test;
 use Date::Calendar::Bahai;
 use Date::Calendar::Bahai::Astronomical;

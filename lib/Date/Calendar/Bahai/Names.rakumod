@@ -1,5 +1,5 @@
-use v6.c;
-unit module Date::Calendar::Bahai::Names:ver<0.0.2>:auth<zef:jforget>:api<0>;
+use v6.d;
+unit module Date::Calendar::Bahai::Names:ver<0.1.0>:auth<zef:jforget>:api<1>;
 
 my %month-names = 'ar' => ( "Bahá"     , "Jalál"  , "Jamál" , "‘Aẓamat"   , "Núr"
                           , "Rahmat"   , "Kalimát", "Kamál" , "Asmá'"     , "'Izzat"
@@ -82,7 +82,7 @@ Date::Calendar::Bahai::Names - string values for the Baháʼí calendar
 
 =head1 SYNOPSIS
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Bahai;
 
