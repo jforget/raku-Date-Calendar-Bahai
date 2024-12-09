@@ -60,7 +60,7 @@ say $dt-bahai.strftime("%A %d %B %Y");
 
 =end code
 
-Converting a Bahai date (e.g. xxxxxxx) into Gregorian
+Converting a Bahai date (e.g. Jalál 1 Bahá 178) into Gregorian
 
 =begin code :lang<raku>
 use Date::Calendar::Bahai::Astronomical;
@@ -132,7 +132,7 @@ L<Date::Bahai::Simple|https://metacpan.org/pod/Date::Bahai::Simple>
 
 date(1), strftime(3)
 
-c<calendar/cal-bahai.el>  in emacs  or xemacs.
+C<calendar/cal-bahai.el>  in emacs  or xemacs.
 
 CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>

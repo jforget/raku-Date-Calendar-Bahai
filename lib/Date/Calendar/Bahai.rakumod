@@ -160,6 +160,7 @@ use Date::Calendar::Bahai;
 my  Date::Calendar::Bahai $dt-bahai;
 $dt-bahai .= new(year => 178, month => 3, day => 19);
 $dt-bahai .= new(major-cycle => 1, cycle => 10, cycle-year => 7, month => 3, day => 19);
+$dt-bahai .= new(year => 178, month => 3, day => 19, daypart => after-sunset, locale => 'fr');
 =end code
 
 =head3 new-from-date
@@ -200,7 +201,7 @@ self-documenting names:
 =item daylight
 =item after-sunset
 
-For C<strftime>, see the specifiers C<%Ep>.
+For C<strftime>, see the specifier C<%Ep>.
 
 =head3 month-name
 
@@ -290,7 +291,7 @@ the default value is C<"Date"> for the Gregorian calendar.
 
 To convert a date from a  calendar to another, you have two conversion
 styles,  a "push"  conversion and  a "pull"  conversion. For  example,
-while  converting  "11  Bahman   1440"  to  the  French  Revolutionary
+while converting "Istijlál 4 ‘Aẓamat  178" to the French Revolutionary
 calendar, you can code:
 
 =begin code :lang<raku>
@@ -488,7 +489,7 @@ because the additional days (I<Ayyám-i-Há>)  are considered as a short
 pseudo-month  numbered  19,  so  month I<Alá>  is  numbered  20.  This
 numbering scheme allows  easy sorting of dates  with the C<YYYY-MM-DD>
 format.  On  the  other  hand,  it is  incompatible  with  some  other
-programs'  numbering scheme,  notably  F<calendar.l>  by Reingold  and
+programs'  numbering scheme,  notably  C<calendar.l>  by Reingold  and
 Dershowitz.
 
 Is the major cycle limited to the  1..19 range or is it open-ended? Do
