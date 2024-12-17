@@ -197,9 +197,9 @@ A  number indicating  which part  of the  day. This  number should  be
 filled   and   compared   with   the   following   subroutines,   with
 self-documenting names:
 
-=item before-sunrise
-=item daylight
-=item after-sunset
+=item before-sunrise()
+=item daylight()
+=item after-sunset()
 
 For C<strftime>, see the specifier C<%Ep>.
 
@@ -225,8 +225,8 @@ The name associated to the year within the 19-year cycle.
 
 =head3 daycount
 
-Convert  the date  to Modified  Julian Day  Number (a  day-only scheme
-based on 17 November 1858).
+The Modified Julian Day Number (a day-only scheme based on 17 November
+1858).
 
 =head3 day-of-week
 
@@ -508,9 +508,9 @@ them.
 
 Another  issue,   as  explained  in   the  C<Date::Calendar::Strftime>
 documentation. Please ensure that  format-string passed to C<strftime>
-comes from  a trusted source.  For example, by including  a outrageous
-length in  a C<strftime> specifier, you  can drain your PC's  RAM very
-fast.
+comes from  a trusted source.  Failing that, the untrusted  source can
+include a outrageous  length in a C<strftime> specifier  and this will
+drain your PC's RAM very fast.
 
 =head2 Relations with :ver<0.0.x> classes
 
@@ -597,6 +597,7 @@ L<https://bahai-library.com/uhj_badi_calendar_2014>
 L<https://www.badi-calendar.com/faq.php>
 
 L<https://www.funaba.org/cc>
+(website no longer works).
 
 L<https://en.wikipedia.org/wiki/Bah%C3%A1%27%C3%AD_calendar>
 

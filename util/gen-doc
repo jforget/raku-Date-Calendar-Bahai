@@ -10,10 +10,11 @@ raku --doc=HTML lib/Date/Calendar/Bahai.rakumod               > $DOC/Bahai.html
 raku --doc=HTML lib/Date/Calendar/Bahai/Astronomical.rakumod  > $DOC/Bahai-Astronomical.html
 raku --doc=HTML lib/Date/Calendar/Bahai/Common.rakumod        > $DOC/Bahai-Common.html
 raku --doc=HTML lib/Date/Calendar/Bahai/Names.rakumod         > $DOC/Bahai-Names.html
+raku --doc=HTML util/gener-test-0.1.0.raku                    > $DOC/gener-test.html
 
 case $1 in
    --show)
      cd $DOC
-     firefox Bahai.html Bahai-Astronomical.html Bahai-Common.html Bahai-Names.html
+     firefox Bahai.html Bahai-Astronomical.html Bahai-Common.html Bahai-Names.html gener-test.html
      ;;
 esac

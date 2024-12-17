@@ -1,4 +1,4 @@
-#!/home/jf/Documents/prog/rakudo/rakudo-2020.12/install/bin/raku  -I../lib
+#!/usr/bin/env raku  -I../lib
 # -*- encoding: utf-8; indent-tabs-mode: nil -*-
 #
 # Generate test data for the Bahai calendar class

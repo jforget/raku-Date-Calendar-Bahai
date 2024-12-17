@@ -65,11 +65,7 @@ my @data  = (
      , (181, 18, 18, after-sunset,   'jc', "Sunday 10 Feb 2778 ☽"        , "Kam 18 Mul 0181 ☽", "Gregorian: 2025-02-23")
      , (181, 18, 18, before-sunrise, 'jc', "Monday 11 Feb 2778 ☾"        , "Kam 18 Mul 0181 ☾", "Gregorian: 2025-02-24")
      , (181, 18, 18, daylight,       'jc', "Monday 11 Feb 2778 ☼"        , "Kam 18 Mul 0181 ☼", "Gregorian: 2025-02-24")
-            );
-
-# for later tests
-my @data-to-do = (
-       (179, 16,  9, after-sunset,   'pe', "Shanbe 17 Dei 1401 ☽"        , "Jam 09 Sha 0179 ☽", "Gregorian: 2023-01-07")
+     , (179, 16,  9, after-sunset,   'pe', "Shanbe 17 Dei 1401 ☽"        , "Jam 09 Sha 0179 ☽", "Gregorian: 2023-01-07")
      , (179, 16,  9, before-sunrise, 'pe', "Yek-shanbe 18 Dei 1401 ☾"    , "Jam 09 Sha 0179 ☾", "Gregorian: 2023-01-08")
      , (179, 16,  9, daylight,       'pe', "Yek-shanbe 18 Dei 1401 ☼"    , "Jam 09 Sha 0179 ☼", "Gregorian: 2023-01-08")
      , (181, 13, 17, after-sunset,   'pa', "Se shanbe 29 Aba 1403 ☽"     , "Ida 17 Qud 0181 ☽", "Gregorian: 2024-11-19")
@@ -116,15 +112,20 @@ my %class =   a0 => 'Date::Calendar::Aztec'
             , pa => 'Date::Calendar::Persian::Astronomical'
             ;
 
-plan 12 × @data.elems;
+plan 12 × @data     .elems
+   + 12 × @data-maya.elems;
 
+check(@data     , "%A %d %b %Y %Ep");
+check(@data-maya, "%e %B %V %A");
+
+sub check(@data, $format) {
 for (@data) -> $datum {
   my ($year, $month, $day, $daypart, $cal, $str2, $str3) = $datum;
   my Date::Calendar::Bahai $d1 .= new(year => $year, month => $month, day => $day, daypart => $daypart);
 
   # push-push
   my $d2 = $d1.to-date(%class{$cal});
-  is($d2.strftime("%A %d %b %Y %Ep"), $str2, "testing push with $str2");
+  is($d2.strftime($format), $str2, "testing push with $str2");
   is($d2.^ver.Str.substr(0, 4), '0.1.');
   my $d3 = $d2.to-date(%class<ba>);
   is($d3.strftime("%a %d %b %Y %Ep"), $str3, "testing push-push with $str2 and $str3");
@@ -137,7 +138,7 @@ for (@data) -> $datum {
 
   # pull-push
   my $d5 = ::(%class{$cal}).new-from-date($d1);
-  is($d5.strftime("%A %d %b %Y %Ep"), $str2, "testing pull with $str2");
+  is($d5.strftime($format), $str2, "testing pull with $str2");
   is($d5.^ver.Str.substr(0, 4), '0.1.');
   my $d6 = $d5.to-date(%class<ba>);
   is($d6.strftime("%a %d %b %Y %Ep"), $str3, "testing pull-push with $str2 and $str3");
@@ -147,6 +148,7 @@ for (@data) -> $datum {
   my Date::Calendar::Bahai $d7 .= new-from-date($d5);
   is($d7.strftime("%a %d %b %Y %Ep"), $str3, "testing pull-pull with $str2 and $str3");
   is($d7.^ver, $ver-ba);
+}
 }
 
 done-testing;
