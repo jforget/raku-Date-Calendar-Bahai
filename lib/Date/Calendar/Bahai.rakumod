@@ -75,22 +75,21 @@ Converting a date while caring about sunset:
 =begin code :lang<raku>
 
 use Date::Calendar::Strftime;
-use Date::Calendar::Gregorian;
 use Date::Calendar::Bahai;
 
 my Date::Calendar::Bahai $dt-bahai;
 my Date                  $dt-greg;
 
-$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => after-sunset);
+$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => after-sunset());
 $dt-greg   = $dt-bahai.to-date;
 say $dt-greg.gist;   # --> 2024-11-13
 
 # on the other hand
-$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => before-sunrise);
+$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => before-sunrise());
 $dt-greg   = $dt-bahai.to-date;
 say $dt-greg.gist;   # --> 2024-11-14
 
-$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => daylight);
+$dt-bahai .= new(year => 181, month => 13, day => 11, daypart => daylight());
 $dt-greg   = $dt-bahai.to-date;
 say $dt-greg.gist;   # --> 2024-11-14
 
@@ -160,7 +159,7 @@ use Date::Calendar::Bahai;
 my  Date::Calendar::Bahai $dt-bahai;
 $dt-bahai .= new(year => 178, month => 3, day => 19);
 $dt-bahai .= new(major-cycle => 1, cycle => 10, cycle-year => 7, month => 3, day => 19);
-$dt-bahai .= new(year => 178, month => 3, day => 19, daypart => after-sunset, locale => 'fr');
+$dt-bahai .= new(year => 178, month => 3, day => 19, daypart => after-sunset(), locale => 'fr');
 =end code
 
 =head3 new-from-date
@@ -512,7 +511,7 @@ comes from  a trusted source.  Failing that, the untrusted  source can
 include a outrageous  length in a C<strftime> specifier  and this will
 drain your PC's RAM very fast.
 
-=head2 Relations with :ver<0.0.x> classes
+=head2 Relations with :ver<0.0.x> classes and with core class Date
 
 Version 0.1.0 (and API 1) was  introduced to ease the conversions with
 other calendars in  which the day is  defined as midnight-to-midnight.
@@ -528,6 +527,12 @@ C<before-sunrise>) to C<daylight>, or it  may shift to the C<daylight>
 part of  the prior (or  next) date. This  means that a  roundtrip with
 cascade conversions  may give the  starting date,  or it may  give the
 date prior or after the starting date.
+
+If you install C<<Date::Calendar::Bahai:ver<0.1.0>>>, why would you
+refrain from upgrading other C<Date::Calendar::>R<xxxx> classes? So
+actually, this issue applies mainly to the core class C<Date>, because
+you may prefer avoiding the installation of
+C<Date::Calendar::Gregorian>.
 
 =head2 Time
 
