@@ -51,7 +51,7 @@ $dt-bahai .= new-from-date($dt-greg);
 
 say $dt-bahai;
 # --> 0178-04-01
-say $dt-bahai.strftime("%A %d %B %Y");
+say $dt-bahai.strftime("%A %e %B %Y");
 # --> Kamál 1 ‘Aẓamat 178
 
 =end code
@@ -155,6 +155,7 @@ Currently implemented  locales are C<ar> for  Arabic (default locale),
 C<en> for English and C<fr> for French.
 
 =begin code :lang<raku>
+use Date::Calendar::Strftime;
 use Date::Calendar::Bahai;
 my  Date::Calendar::Bahai $dt-bahai;
 $dt-bahai .= new(year => 178, month => 3, day => 19);
@@ -307,6 +308,8 @@ $d-orig .= new(year  => 178
              , day   =>   4);
 $d-dest-push  = $d-orig.to-date("Date::Calendar::FrenchRevolutionary");
 $d-dest-pull .= new-from-date($d-orig);
+say $d-orig, ' ', $d-dest-push, ' ', $d-dest-pull;
+# --> "178-04-04 0229-09-01 0229-09-01"
 
 =end code
 
