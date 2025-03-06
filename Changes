@@ -1,5 +1,7 @@
 Revision history for Date-Calendar-Bahai
 
+0.1.1 released on...
+
 0.1.0, released on Istijlál  8 Masá'il Ḥubb, Váḥid 10, Kull-i-S͟hayʼ 1 (2024-12-19 in Gregorian)
     - add a "daypart" method, so the "after sunset" dates will be properly converted from / to midnight-to-midnight calendars
 

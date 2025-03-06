@@ -4,7 +4,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Bahai::Names;
 use Date::Calendar::Bahai::Common;
 
-unit class Date::Calendar::Bahai:ver<0.1.0>:auth<zef:jforget>:api<1>
+unit class Date::Calendar::Bahai:ver<0.1.1>:auth<zef:jforget>:api<1>
       does Date::Calendar::Bahai::Common
       does Date::Calendar::Strftime;
 
@@ -531,7 +531,7 @@ part of  the prior (or  next) date. This  means that a  roundtrip with
 cascade conversions  may give the  starting date,  or it may  give the
 date prior or after the starting date.
 
-If you install C<<Date::Calendar::Bahai:ver<0.1.0>>>, why would you
+If you install C<<Date::Calendar::Bahai:ver<0.1.1>>>, why would you
 refrain from upgrading other C<Date::Calendar::>R<xxxx> classes? So
 actually, this issue applies mainly to the core class C<Date>, because
 you may prefer avoiding the installation of
@@ -588,6 +588,9 @@ date(1), strftime(3)
 
 C<calendar/cal-bahai.el>  in emacs  or xemacs.
 
+L<https://pypi.org/project/convertdate/>
+or L<https://convertdate.readthedocs.io/en/latest/modules/bahai.html>
+
 CALENDRICA 4.0 -- Common Lisp, which can be downloaded in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>
 
@@ -607,6 +610,9 @@ L<https://www.badi-calendar.com/faq.php>
 L<https://www.funaba.org/cc>
 (website no longer works).
 
+L<https://www.ephemeride.com/calendrier/autrescalendriers/21/autres-types-de-calendriers.html>
+(in French)
+
 L<https://en.wikipedia.org/wiki/Bah%C3%A1%27%C3%AD_calendar>
 
 L<https://icalendrier.fr/calendriers-saga/calendriers/baha-i> (in French)
@@ -617,7 +623,7 @@ Jean Forget <J2N-FORGET at orange dot fr>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2021, 2024 Jean Forget, all rights reserved.
+Copyright (c) 2021, 2024, 2025 Jean Forget, all rights reserved.
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
